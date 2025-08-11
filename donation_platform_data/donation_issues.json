@@ -1,9 +1,73 @@
 {
   "project_id": "10000",
   "project_key": "DP",
-  "last_updated": "2025-08-11T23:10:07.428684",
-  "total_issues": 8,
+  "last_updated": "2025-08-12T23:12:21.903673",
+  "total_issues": 12,
   "issues": [
+    {
+      "id": "10045",
+      "key": "DP-12",
+      "summary": "dashboard",
+      "description": null,
+      "status": "Done",
+      "priority": "Medium",
+      "issuetype": "Task",
+      "created": "2025-08-12 22:52:47.479000+05:30",
+      "updated": "2025-08-12 22:52:47.840000+05:30",
+      "closed_date": "2025-08-12 22:52:47.829000+05:30",
+      "assignee": "",
+      "reporter": "Aakash Awate",
+      "created_by": "Aakash Awate",
+      "assigned_to": "Unassigned"
+    },
+    {
+      "id": "10044",
+      "key": "DP-11",
+      "summary": "new test for beeterment",
+      "description": null,
+      "status": "To Do",
+      "priority": "Medium",
+      "issuetype": "Task",
+      "created": "2025-08-12 22:27:14.680000+05:30",
+      "updated": "2025-08-12 22:27:14.717000+05:30",
+      "closed_date": null,
+      "assignee": "",
+      "reporter": "Aakash Awate",
+      "created_by": "Aakash Awate",
+      "assigned_to": "Unassigned"
+    },
+    {
+      "id": "10043",
+      "key": "DP-10",
+      "summary": "Test live",
+      "description": null,
+      "status": "To Do",
+      "priority": "Medium",
+      "issuetype": "Task",
+      "created": "2025-08-12 21:38:58.647000+05:30",
+      "updated": "2025-08-12 21:38:58.680000+05:30",
+      "closed_date": null,
+      "assignee": "",
+      "reporter": "Aakash Awate",
+      "created_by": "Aakash Awate",
+      "assigned_to": "Unassigned"
+    },
+    {
+      "id": "10042",
+      "key": "DP-9",
+      "summary": "Test demo after optimization",
+      "description": null,
+      "status": "In Review",
+      "priority": "Medium",
+      "issuetype": "Task",
+      "created": "2025-08-12 20:30:43.034000+05:30",
+      "updated": "2025-08-12 20:30:43.428000+05:30",
+      "closed_date": null,
+      "assignee": "",
+      "reporter": "Aakash Awate",
+      "created_by": "Aakash Awate",
+      "assigned_to": "Unassigned"
+    },
     {
       "id": "10008",
       "key": "DP-8",
@@ -14,8 +78,11 @@
       "issuetype": "Task",
       "created": "2025-08-07 16:05:13.333000+05:30",
       "updated": "2025-08-07 16:05:13.468000+05:30",
+      "closed_date": null,
       "assignee": "Aakash Awate",
-      "reporter": "Aakash Awate"
+      "reporter": "Aakash Awate",
+      "created_by": "Aakash Awate",
+      "assigned_to": "Aakash Awate"
     },
     {
       "id": "10006",
@@ -27,8 +94,11 @@
       "issuetype": "Task",
       "created": "2025-08-07 16:04:25.511000+05:30",
       "updated": "2025-08-07 16:04:25.555000+05:30",
+      "closed_date": null,
       "assignee": "",
-      "reporter": "Aakash Awate"
+      "reporter": "Aakash Awate",
+      "created_by": "Aakash Awate",
+      "assigned_to": "Unassigned"
     },
     {
       "id": "10002",
@@ -54,8 +124,11 @@
       "issuetype": "Story",
       "created": "2025-08-07 16:02:52.993000+05:30",
       "updated": "2025-08-07 16:02:53.486000+05:30",
+      "closed_date": null,
       "assignee": "",
-      "reporter": "Aakash Awate"
+      "reporter": "Aakash Awate",
+      "created_by": "Aakash Awate",
+      "assigned_to": "Unassigned"
     },
     {
       "id": "10003",
@@ -81,8 +154,11 @@
       "issuetype": "Task",
       "created": "2025-08-07 16:02:52.991000+05:30",
       "updated": "2025-08-07 16:02:53.374000+05:30",
+      "closed_date": null,
       "assignee": "",
-      "reporter": "Aakash Awate"
+      "reporter": "Aakash Awate",
+      "created_by": "Aakash Awate",
+      "assigned_to": "Unassigned"
     },
     {
       "id": "10004",
@@ -108,8 +184,11 @@
       "issuetype": "Story",
       "created": "2025-08-07 16:02:52.989000+05:30",
       "updated": "2025-08-07 16:02:53.398000+05:30",
+      "closed_date": null,
       "assignee": "",
-      "reporter": "Aakash Awate"
+      "reporter": "Aakash Awate",
+      "created_by": "Aakash Awate",
+      "assigned_to": "Unassigned"
     },
     {
       "id": "10005",
@@ -135,8 +214,11 @@
       "issuetype": "Task",
       "created": "2025-08-07 16:02:52.989000+05:30",
       "updated": "2025-08-07 16:02:53.560000+05:30",
+      "closed_date": null,
       "assignee": "",
-      "reporter": "Aakash Awate"
+      "reporter": "Aakash Awate",
+      "created_by": "Aakash Awate",
+      "assigned_to": "Unassigned"
     },
     {
       "id": "10000",
@@ -162,8 +244,11 @@
       "issuetype": "Epic",
       "created": "2025-08-07 16:02:52.169000+05:30",
       "updated": "2025-08-07 16:02:52.777000+05:30",
+      "closed_date": null,
       "assignee": "",
-      "reporter": "Aakash Awate"
+      "reporter": "Aakash Awate",
+      "created_by": "Aakash Awate",
+      "assigned_to": "Unassigned"
     },
     {
       "id": "10001",
@@ -189,8 +274,11 @@
       "issuetype": "Epic",
       "created": "2025-08-07 16:02:52.169000+05:30",
       "updated": "2025-08-07 16:02:52.679000+05:30",
+      "closed_date": null,
       "assignee": "",
-      "reporter": "Aakash Awate"
+      "reporter": "Aakash Awate",
+      "created_by": "Aakash Awate",
+      "assigned_to": "Unassigned"
     }
   ]
 }

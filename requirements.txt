@@ -1,6 +1,6 @@
 # Jira to Database/FileSystem Integration
 requests>=2.31.0
-mysql-connector-python>=8.1.0
+
 
 # Dashboard dependencies
 flask>=2.3.0

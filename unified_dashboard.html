@@ -129,7 +129,23 @@
             padding: 12px;
             border-bottom: 1px solid #e2e8f0;
             vertical-align: middle;
+            font-size: 14px;
         }
+
+        .issue-summary {
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .issues-table th:nth-child(1) { width: 80px; }   /* Issue ID */
+        .issues-table th:nth-child(2) { width: 35%; }    /* Summary */
+        .issues-table th:nth-child(3) { width: 12%; }    /* Created Date */
+        .issues-table th:nth-child(4) { width: 12%; }    /* Created By */
+        .issues-table th:nth-child(5) { width: 12%; }    /* Assigned To */
+        .issues-table th:nth-child(6) { width: 10%; }    /* Status */
+        .issues-table th:nth-child(7) { width: 12%; }    /* Closed Date */
 
         .issue-key {
             background: #3182ce;
@@ -396,16 +412,18 @@
                 <table class="issues-table">
                     <thead>
                         <tr>
-                            <th>🔗 Issue Key</th>
+                            <th>🎫 Issue ID</th>
                             <th>📝 Summary</th>
-                            <th>📊 Status</th>
-                            <th>👤 Assignee</th>
-                            <th>📅 Created</th>
+                            <th>� Created Date</th>
+                            <th>👤 Created By</th>
+                            <th>👥 Assigned To</th>
+                            <th>� Status</th>
+                            <th>✅ Closed Date</th>
                         </tr>
                     </thead>
                     <tbody id="issuesTableBody">
                         <tr>
-                            <td colspan="5" class="loading">Loading Jira issues...</td>
+                            <td colspan="7" class="loading">Loading Jira issues...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -455,8 +473,7 @@
     <script>
         // Global variables
         let jiraData = null;
-        let datadogData = null;
-        const DATADOG_API_KEY = 'fc50b4d7ebb710a4f1eff7a3a42330df';
+        const DATADOG_API_KEY = 'fc50b4d7ebb710a4f1eff7a3a42330df';  // For reference only
         
         // Load Jira data
         async function loadJiraData() {
@@ -467,22 +484,7 @@
             } catch (error) {
                 console.error('Error loading Jira data:', error);
                 document.getElementById('issuesTableBody').innerHTML = 
-                    '<tr><td colspan="5" style="color: #e53e3e; text-align: center;">Failed to load Jira data</td></tr>';
-            }
-        }
-
-        // Load DataDog metrics (not needed for iframe, but keeping for future use)
-        async function loadDataDogData() {
-            try {
-                const response = await fetch('datadog_metrics.json');
-                if (response.ok) {
-                    datadogData = await response.json();
-                    console.log('DataDog metrics data loaded (for future use)');
-                } else {
-                    console.log('DataDog metrics not available');
-                }
-            } catch (error) {
-                console.log('DataDog data not available');
+                    '<tr><td colspan="7" style="color: #e53e3e; text-align: center;">Failed to load Jira data</td></tr>';
             }
         }
 
@@ -518,15 +520,20 @@
             const tbody = document.getElementById('issuesTableBody');
             tbody.innerHTML = jiraData.issues.map(issue => {
                 const statusClass = getStatusClass(issue.status);
-                const createdDate = new Date(issue.created).toLocaleDateString();
+                const createdDate = formatDate(issue.created);
+                const closedDate = issue.closed_date ? formatDate(issue.closed_date) : '-';
+                const createdBy = issue.created_by || issue.reporter || '-';
+                const assignedTo = issue.assigned_to || issue.assignee || 'Unassigned';
                 
                 return `
                     <tr>
                         <td><a href="#" class="issue-key">${issue.key}</a></td>
-                        <td>${issue.summary || 'No summary'}</td>
-                        <td><span class="status-badge ${statusClass}">${issue.status}</span></td>
-                        <td>${issue.assignee || 'Unassigned'}</td>
+                        <td class="issue-summary" title="${issue.summary || 'No summary'}">${truncateText(issue.summary || 'No summary', 50)}</td>
                         <td>${createdDate}</td>
+                        <td>${createdBy}</td>
+                        <td>${assignedTo}</td>
+                        <td><span class="status-badge ${statusClass}">${issue.status}</span></td>
+                        <td>${closedDate}</td>
                     </tr>
                 `;
             }).join('');
@@ -540,6 +547,23 @@
             if (statusLower.includes('resolved') || statusLower.includes('done') || statusLower.includes('closed')) return 'status-resolved';
             if (statusLower.includes('to do')) return 'status-todo';
             return 'status-todo';
+        }
+
+        // Format date helper function
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            } catch (error) {
+                return dateString;
+            }
+        }
+
+        // Truncate text helper function
+        function truncateText(text, maxLength) {
+            if (!text || text.length <= maxLength) return text;
+            return text.substring(0, maxLength) + '...';
         }
 
         // DataDog iframe is now embedded directly, no custom charts needed
@@ -646,12 +670,10 @@
             
             // Load data
             loadJiraData();
-            loadDataDogData();
             
-            // Refresh data every 5 minutes
+            // Refresh data every 5 minutes (Jira only - DataDog shows live via iframe)
             setInterval(() => {
                 loadJiraData();
-                loadDataDogData();
             }, 5 * 60 * 1000);
         });
     </script>

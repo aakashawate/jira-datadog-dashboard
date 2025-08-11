@@ -11,33 +11,39 @@ Version: 1.0
 
 import os
 import json
-import mysql.connector
 import requests
 import logging
 from datetime import datetime
 from pathlib import Path
+
+# Optional MySQL import - only if database storage is needed
+try:
+    import mysql.connector
+    MYSQL_AVAILABLE = True
+except ImportError:
+    MYSQL_AVAILABLE = False
+    print("ℹ️  MySQL connector not available - using file system storage only")
+
+# Import configuration from central config file
+import config
 
 # ============================================================================
 # CONFIGURATION
 # ============================================================================
 
 class Config:
-    """Application configuration settings"""
+    """Application configuration settings - uses central config.py"""
     
-    # ============================================================================
-    # JIRA CREDENTIALS - UPDATED
-    # ============================================================================
-    
-    # Jira Configuration - Donation Platform Only
-    JIRA_BASE_URL = "https://tseljira.atlassian.net"
-    JIRA_EMAIL = "saiakki37@gmail.com"
-    JIRA_API_TOKEN = "ATATT3xFfGF0T3Z-hQti6F4mZY6wKxYWug2xv5eCem4dCo-LjPe_lpCag3Ph2drfyrGNPgFtEtlHwyosBdA_HUHlOjuJbHJBgpSzfjtKdevFMSjuiq8X-TCfcsH2LBe5sZUvBY8aNnQ0-YzmyZ992txcFg-xZt8lMp2RrFE_e9zUI1VIXIsjDk4=7C06EFA9"
-    JIRA_PROJECT_ID = "10000"  # Donation Platform (DP)
+    # Import Jira settings from config.py (single source of truth)
+    JIRA_BASE_URL = config.JIRA_BASE_URL
+    JIRA_EMAIL = config.JIRA_EMAIL
+    JIRA_API_TOKEN = config.JIRA_API_TOKEN
+    JIRA_PROJECT_ID = getattr(config, 'JIRA_PROJECT_ID', 'DP')
     JIRA_PROJECT_KEY = "DP"    # Project key for Donation Platform
-    JIRA_MAX_RESULTS = 100
+    JIRA_MAX_RESULTS = getattr(config, 'JIRA_MAX_RESULTS', 100)
     
     # Storage Configuration
-    USE_DATABASE = os.getenv('USE_DATABASE', 'false').lower() == 'true'  # Set to True for DB, False for file system
+    USE_DATABASE = os.getenv('USE_DATABASE', 'false').lower() == 'true' and MYSQL_AVAILABLE
     
     # File System Configuration - Donation Platform specific
     DATA_DIR = os.getenv('DATA_DIR', 'donation_platform_data')
@@ -110,6 +116,7 @@ class Database:
                 issue_type VARCHAR(100),
                 created_date DATETIME,
                 updated_date DATETIME,
+                closed_date DATETIME NULL,
                 assignee VARCHAR(255),
                 reporter VARCHAR(255),
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -151,9 +158,9 @@ class Database:
                 cursor.execute("""
                     INSERT INTO jira_issues (
                         id, project_id, issue_key, summary, description,
-                        status, priority, issue_type, created_date, updated_date,
+                        status, priority, issue_type, created_date, updated_date, closed_date,
                         assignee, reporter
-                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     ON DUPLICATE KEY UPDATE
                         summary = VALUES(summary),
                         description = VALUES(description),
@@ -161,6 +168,7 @@ class Database:
                         priority = VALUES(priority),
                         issue_type = VALUES(issue_type),
                         updated_date = VALUES(updated_date),
+                        closed_date = VALUES(closed_date),
                         assignee = VALUES(assignee),
                         reporter = VALUES(reporter)
                 """, (
@@ -174,6 +182,7 @@ class Database:
                     issue.get('issuetype', ''),
                     issue.get('created'),
                     issue.get('updated'),
+                    issue.get('closed_date'),
                     issue.get('assignee', ''),
                     issue.get('reporter', '')
                 ))
@@ -254,12 +263,9 @@ class FileSystemStorage:
             logger.info(f"Issues backed up to {backup_issues}")
     
     def save_issues(self, project_data, issues_data):
-        """Save project and issues to JSON files"""
+        """Save project and issues to JSON files - ALWAYS FRESH DATA"""
         try:
-            # Create backup first
-            self.create_backup()
-            
-            # Save project data
+            # Save project data with current timestamp
             project_with_timestamp = {
                 **project_data,
                 'last_updated': datetime.now().isoformat(),
@@ -269,7 +275,7 @@ class FileSystemStorage:
             with open(Config.PROJECTS_FILE, 'w', encoding='utf-8') as f:
                 json.dump(project_with_timestamp, f, indent=2, ensure_ascii=False, default=str)
             
-            # Save issues data
+            # Save issues data with current timestamp - ALWAYS OVERWRITE
             issues_with_metadata = {
                 'project_id': project_data['id'],
                 'project_key': project_data['key'],
@@ -281,7 +287,7 @@ class FileSystemStorage:
             with open(Config.ISSUES_FILE, 'w', encoding='utf-8') as f:
                 json.dump(issues_with_metadata, f, indent=2, ensure_ascii=False, default=str)
             
-            logger.info(f"Saved {len(issues_data)} issues to file system")
+            logger.info(f"FRESH DATA: Saved {len(issues_data)} issues with timestamp {datetime.now().isoformat()}")
             return True
             
         except Exception as e:
@@ -429,7 +435,8 @@ class JiraClient:
         self.session.auth = (Config.JIRA_EMAIL, Config.JIRA_API_TOKEN)
         
     def get_project(self):
-        """Get project details"""
+        """Get project details - try both ID and key"""
+        # First try with project ID
         url = f"{Config.JIRA_BASE_URL}/rest/api/3/project/{Config.JIRA_PROJECT_ID}"
         
         try:
@@ -437,8 +444,17 @@ class JiraClient:
             response.raise_for_status()
             return response.json()
         except Exception as e:
-            logger.error(f"Failed to get project: {e}")
-            return None
+            logger.info(f"Failed to get project by ID {Config.JIRA_PROJECT_ID}: {e}")
+            
+            # Try with project key
+            url = f"{Config.JIRA_BASE_URL}/rest/api/3/project/{Config.JIRA_PROJECT_KEY}"
+            try:
+                response = self.session.get(url)
+                response.raise_for_status()
+                return response.json()
+            except Exception as e2:
+                logger.error(f"Failed to get project by key {Config.JIRA_PROJECT_KEY}: {e2}")
+                return None
     
     def get_all_issues(self):
         """Get all issues from the project"""
@@ -448,10 +464,10 @@ class JiraClient:
         while True:
             url = f"{Config.JIRA_BASE_URL}/rest/api/3/search"
             params = {
-                'jql': f'project = {Config.JIRA_PROJECT_ID}',
+                'jql': f'project = "{Config.JIRA_PROJECT_KEY}"',
                 'startAt': start_at,
                 'maxResults': Config.JIRA_MAX_RESULTS,
-                'fields': 'id,key,summary,description,status,priority,issuetype,created,updated,assignee,reporter'
+                'fields': 'id,key,summary,description,status,priority,issuetype,created,updated,resolutiondate,assignee,reporter'
             }
             
             try:
@@ -471,8 +487,12 @@ class JiraClient:
                         'issuetype': issue['fields']['issuetype']['name'] if issue['fields'].get('issuetype') else '',
                         'created': self._parse_date(issue['fields'].get('created')),
                         'updated': self._parse_date(issue['fields'].get('updated')),
+                        'closed_date': self._parse_date(issue['fields'].get('resolutiondate')),
                         'assignee': issue['fields']['assignee']['displayName'] if issue['fields'].get('assignee') else '',
-                        'reporter': issue['fields']['reporter']['displayName'] if issue['fields'].get('reporter') else ''
+                        'reporter': issue['fields']['reporter']['displayName'] if issue['fields'].get('reporter') else '',
+                        # Additional fields for display
+                        'created_by': issue['fields']['reporter']['displayName'] if issue['fields'].get('reporter') else '',
+                        'assigned_to': issue['fields']['assignee']['displayName'] if issue['fields'].get('assignee') else 'Unassigned'
                     }
                     batch_issues.append(processed)
                 
@@ -581,16 +601,18 @@ def main():
         logger.info("Fetching Donation Platform project data...")
         project = jira.get_project()
         if not project:
-            logger.error("Failed to fetch Donation Platform project data")
-            return
+            logger.warning("Failed to fetch project data, using fallback project info")
+            # Create fallback project data
+            project = {
+                'id': Config.JIRA_PROJECT_ID,
+                'key': Config.JIRA_PROJECT_KEY,
+                'name': 'Donation Platform',
+                'projectTypeKey': 'software'
+            }
+        else:
+            logger.info(f"Project: {project.get('name', 'Unknown')} ({project.get('key', 'Unknown')})")
         
-        # Verify it's the correct project
-        if project.get('key') != Config.JIRA_PROJECT_KEY:
-            logger.warning(f"Expected project key '{Config.JIRA_PROJECT_KEY}' but got '{project.get('key')}'")
-        
-        logger.info(f"Project: {project.get('name', 'Unknown')} ({project.get('key', 'Unknown')})")
-        
-        # Get issues data
+        # Get issues data (this is the most important part)
         logger.info("Fetching Donation Platform issues...")
         issues = jira.get_all_issues()
         if not issues:

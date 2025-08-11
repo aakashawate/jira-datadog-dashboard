@@ -14,10 +14,10 @@ import os
 # Your Jira instance details
 JIRA_BASE_URL = "https://tseljira.atlassian.net"
 JIRA_EMAIL = "saiakki37@gmail.com"
-JIRA_API_TOKEN = "ATATT3xFfGF0T3Z-hQti6F4mZY6wKxYWug2xv5eCem4dCo-LjPe_lpCag3Ph2drfyrGNPgFtEtlHwyosBdA_HUHlOjuJbHJBgpSzfjtKdevFMSjuiq8X-TCfcsH2LBe5sZUvBY8aNnQ0-YzmyZ992txcFg-xZt8lMp2RrFE_e9zUI1VIXIsjDk4=7C06EFA9"
+JIRA_API_TOKEN = "ATATT3xFfGF0AoV4HQmCtDlBh-GQnoS_DOLLXVttHaE_tF_ILhMOdrybRA64O4zdztG_iuHXIORU9aGDQHFP5Fh47CJ4mYR3r2uvGSISCNJzQAOnGtT1xNa83Le5mCSaAxmUD_NnbSVi6PI0z32i2EbAhPsHx3SA4W3mSapx36CqkXYTKIJaxb8=67AA7CBC"
 
 # Project settings
-JIRA_PROJECT_ID = "10000"  # Update this to your actual project ID
+JIRA_PROJECT_ID = "10000"  # Numeric project ID for Donation Platform
 JIRA_MAX_RESULTS = 100     # Number of issues to fetch per request
 
 # ============================================================================
@@ -64,7 +64,7 @@ RETRY_DELAY = 1  # seconds
 # Jira fields to fetch - add custom fields here if needed
 JIRA_FIELDS = [
     'id', 'key', 'summary', 'description', 'status', 'priority', 
-    'issuetype', 'created', 'updated', 'assignee', 'reporter',
+    'issuetype', 'created', 'updated', 'resolutiondate', 'assignee', 'reporter',
     # Add custom fields like: 'customfield_10001'
 ]
 
