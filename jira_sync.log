@@ -1,0 +1,130 @@
+2025-08-11 22:45:35,939 - __main__ - INFO - Starting Jira to Database/FileSystem sync...
+2025-08-11 22:45:35,940 - __main__ - INFO - Using File System storage
+2025-08-11 22:45:35,942 - __main__ - INFO - File system directories initialized
+2025-08-11 22:45:35,943 - __main__ - INFO - Storage Type: File System
+2025-08-11 22:45:35,944 - __main__ - INFO - Data Directory: data
+2025-08-11 22:45:35,945 - __main__ - INFO - File system directories initialized
+2025-08-11 22:45:35,945 - __main__ - INFO - Fetching project data...
+2025-08-11 22:45:37,038 - __main__ - INFO - Project: Donation Platform (DP)
+2025-08-11 22:45:37,039 - __main__ - INFO - Fetching issues data...
+2025-08-11 22:45:37,767 - __main__ - INFO - Fetched 8 issues (total: 8)
+2025-08-11 22:45:37,768 - __main__ - INFO - Saving 8 issues to file system...
+2025-08-11 22:45:37,773 - __main__ - INFO - Saved 8 issues to file system
+2025-08-11 22:45:37,773 - __main__ - INFO - Sync completed successfully!
+2025-08-11 22:45:37,774 - __main__ - INFO - === STATISTICS ===
+2025-08-11 22:45:37,774 - __main__ - INFO - Total Issues: 8
+2025-08-11 22:45:37,774 - __main__ - INFO - Active: 4
+2025-08-11 22:45:37,775 - __main__ - INFO - Closed: 0
+2025-08-11 22:45:37,775 - __main__ - INFO - Todo: 3
+2025-08-11 22:45:37,775 - __main__ - INFO - Last Updated: 2025-08-11T22:45:37.771290
+2025-08-11 22:45:50,688 - __main__ - INFO - Starting Jira to Database/FileSystem sync...
+2025-08-11 22:45:50,688 - __main__ - INFO - Using File System storage
+2025-08-11 22:45:50,690 - __main__ - INFO - File system directories initialized
+2025-08-11 22:45:50,690 - __main__ - INFO - Storage Type: File System
+2025-08-11 22:45:50,690 - __main__ - INFO - Data Directory: data
+2025-08-11 22:45:50,691 - __main__ - INFO - File system directories initialized
+2025-08-11 22:45:50,691 - __main__ - INFO - Fetching project data...
+2025-08-11 22:45:51,300 - __main__ - INFO - Project: Donation Platform (DP)
+2025-08-11 22:45:51,300 - __main__ - INFO - Fetching issues data...
+2025-08-11 22:45:51,966 - __main__ - INFO - Fetched 8 issues (total: 8)
+2025-08-11 22:45:51,967 - __main__ - INFO - Saving 8 issues to file system...
+2025-08-11 22:45:51,968 - __main__ - INFO - Projects backed up to data\backups\projects_20250811_224551.json
+2025-08-11 22:45:51,969 - __main__ - INFO - Issues backed up to data\backups\issues_20250811_224551.json
+2025-08-11 22:45:51,973 - __main__ - INFO - Saved 8 issues to file system
+2025-08-11 22:45:51,973 - __main__ - INFO - Sync completed successfully!
+2025-08-11 22:45:51,974 - __main__ - INFO - === STATISTICS ===
+2025-08-11 22:45:51,974 - __main__ - INFO - Total Issues: 8
+2025-08-11 22:45:51,974 - __main__ - INFO - Active: 4
+2025-08-11 22:45:51,974 - __main__ - INFO - Closed: 0
+2025-08-11 22:45:51,974 - __main__ - INFO - Todo: 3
+2025-08-11 22:45:51,974 - __main__ - INFO - Last Updated: 2025-08-11T22:45:51.971128
+2025-08-11 22:48:54,436 - __main__ - INFO - Starting Jira to Database/FileSystem sync...
+2025-08-11 22:48:54,437 - __main__ - INFO - Using File System storage
+2025-08-11 22:48:54,438 - __main__ - INFO - File system directories initialized
+2025-08-11 22:48:54,439 - __main__ - INFO - Storage Type: File System
+2025-08-11 22:48:54,439 - __main__ - INFO - Data Directory: data
+2025-08-11 22:48:54,440 - __main__ - INFO - File system directories initialized
+2025-08-11 22:48:54,440 - __main__ - INFO - Fetching project data...
+2025-08-11 22:48:55,073 - __main__ - INFO - Project: Donation Platform (DP)
+2025-08-11 22:48:55,073 - __main__ - INFO - Fetching issues data...
+2025-08-11 22:48:55,604 - __main__ - INFO - Fetched 8 issues (total: 8)
+2025-08-11 22:48:55,605 - __main__ - INFO - Saving 8 issues to file system...
+2025-08-11 22:48:55,607 - __main__ - INFO - Projects backed up to data\backups\projects_20250811_224855.json
+2025-08-11 22:48:55,608 - __main__ - INFO - Issues backed up to data\backups\issues_20250811_224855.json
+2025-08-11 22:48:55,612 - __main__ - INFO - Saved 8 issues to file system
+2025-08-11 22:48:55,612 - __main__ - INFO - Sync completed successfully!
+2025-08-11 22:48:55,613 - __main__ - INFO - === STATISTICS ===
+2025-08-11 22:48:55,613 - __main__ - INFO - Total Issues: 8
+2025-08-11 22:48:55,614 - __main__ - INFO - Active: 4
+2025-08-11 22:48:55,614 - __main__ - INFO - Closed: 0
+2025-08-11 22:48:55,614 - __main__ - INFO - Todo: 3
+2025-08-11 22:48:55,614 - __main__ - INFO - Last Updated: 2025-08-11T22:48:55.610197
+2025-08-11 22:49:05,509 - __main__ - INFO - Starting Jira to Database/FileSystem sync...
+2025-08-11 22:49:05,510 - __main__ - INFO - Using File System storage
+2025-08-11 22:49:05,511 - __main__ - INFO - File system directories initialized
+2025-08-11 22:49:05,511 - __main__ - INFO - Storage Type: File System
+2025-08-11 22:49:05,511 - __main__ - INFO - Data Directory: data
+2025-08-11 22:49:05,512 - __main__ - INFO - File system directories initialized
+2025-08-11 22:49:05,513 - __main__ - INFO - Fetching project data...
+2025-08-11 22:49:06,110 - __main__ - INFO - Project: Donation Platform (DP)
+2025-08-11 22:49:06,111 - __main__ - INFO - Fetching issues data...
+2025-08-11 22:49:06,605 - __main__ - INFO - Fetched 8 issues (total: 8)
+2025-08-11 22:49:06,606 - __main__ - INFO - Saving 8 issues to file system...
+2025-08-11 22:49:06,607 - __main__ - INFO - Projects backed up to data\backups\projects_20250811_224906.json
+2025-08-11 22:49:06,608 - __main__ - INFO - Issues backed up to data\backups\issues_20250811_224906.json
+2025-08-11 22:49:06,611 - __main__ - INFO - Saved 8 issues to file system
+2025-08-11 22:49:06,612 - __main__ - INFO - Sync completed successfully!
+2025-08-11 22:49:06,613 - __main__ - INFO - === STATISTICS ===
+2025-08-11 22:49:06,613 - __main__ - INFO - Total Issues: 8
+2025-08-11 22:49:06,613 - __main__ - INFO - Active: 4
+2025-08-11 22:49:06,614 - __main__ - INFO - Closed: 0
+2025-08-11 22:49:06,614 - __main__ - INFO - Todo: 3
+2025-08-11 22:49:06,614 - __main__ - INFO - Last Updated: 2025-08-11T22:49:06.610446
+2025-08-11 22:49:49,993 - __main__ - INFO - Using File System storage
+2025-08-11 22:49:49,994 - __main__ - INFO - File system directories initialized
+2025-08-11 22:49:49,995 - __main__ - INFO - File system directories initialized
+2025-08-11 22:50:26,478 - __main__ - INFO - Using File System storage
+2025-08-11 22:50:26,479 - __main__ - INFO - File system directories initialized
+2025-08-11 22:50:26,480 - __main__ - INFO - File system directories initialized
+2025-08-11 22:50:54,811 - jira_integration - INFO - Starting Jira to Database/FileSystem sync...
+2025-08-11 22:50:54,812 - jira_integration - INFO - Using File System storage
+2025-08-11 22:50:54,813 - jira_integration - INFO - File system directories initialized
+2025-08-11 22:50:54,813 - jira_integration - INFO - Storage Type: File System
+2025-08-11 22:50:54,814 - jira_integration - INFO - Data Directory: data
+2025-08-11 22:50:54,815 - jira_integration - INFO - File system directories initialized
+2025-08-11 22:50:54,816 - jira_integration - INFO - Fetching project data...
+2025-08-11 22:50:55,475 - jira_integration - INFO - Project: Support (SUP)
+2025-08-11 22:50:55,475 - jira_integration - INFO - Fetching issues data...
+2025-08-11 22:50:56,166 - jira_integration - INFO - Fetched 1 issues (total: 1)
+2025-08-11 22:50:56,167 - jira_integration - INFO - Saving 1 issues to file system...
+2025-08-11 22:50:56,168 - jira_integration - INFO - Projects backed up to data\backups\projects_20250811_225056.json
+2025-08-11 22:50:56,169 - jira_integration - INFO - Issues backed up to data\backups\issues_20250811_225056.json
+2025-08-11 22:50:56,172 - jira_integration - INFO - Saved 1 issues to file system
+2025-08-11 22:50:56,172 - jira_integration - INFO - Sync completed successfully!
+2025-08-11 22:50:56,173 - jira_integration - INFO - === STATISTICS ===
+2025-08-11 22:50:56,174 - jira_integration - INFO - Total Issues: 1
+2025-08-11 22:50:56,174 - jira_integration - INFO - Active: 1
+2025-08-11 22:50:56,174 - jira_integration - INFO - Closed: 0
+2025-08-11 22:50:56,174 - jira_integration - INFO - Todo: 0
+2025-08-11 22:50:56,174 - jira_integration - INFO - Last Updated: 2025-08-11T22:50:56.171622
+2025-08-11 22:51:38,917 - jira_integration - INFO - Starting Jira to Database/FileSystem sync...
+2025-08-11 22:51:38,918 - jira_integration - INFO - Using File System storage
+2025-08-11 22:51:38,919 - jira_integration - INFO - File system directories initialized
+2025-08-11 22:51:38,920 - jira_integration - INFO - Storage Type: File System
+2025-08-11 22:51:38,920 - jira_integration - INFO - Data Directory: data
+2025-08-11 22:51:38,921 - jira_integration - INFO - File system directories initialized
+2025-08-11 22:51:38,922 - jira_integration - INFO - Fetching project data...
+2025-08-11 22:51:39,481 - jira_integration - INFO - Project: Support (SUP)
+2025-08-11 22:51:39,481 - jira_integration - INFO - Fetching issues data...
+2025-08-11 22:51:40,003 - jira_integration - INFO - Fetched 1 issues (total: 1)
+2025-08-11 22:51:40,004 - jira_integration - INFO - Saving 1 issues to file system...
+2025-08-11 22:51:40,005 - jira_integration - INFO - Projects backed up to data\backups\projects_20250811_225140.json
+2025-08-11 22:51:40,006 - jira_integration - INFO - Issues backed up to data\backups\issues_20250811_225140.json
+2025-08-11 22:51:40,009 - jira_integration - INFO - Saved 1 issues to file system
+2025-08-11 22:51:40,009 - jira_integration - INFO - Sync completed successfully!
+2025-08-11 22:51:40,010 - jira_integration - INFO - === STATISTICS ===
+2025-08-11 22:51:40,010 - jira_integration - INFO - Total Issues: 1
+2025-08-11 22:51:40,010 - jira_integration - INFO - Active: 1
+2025-08-11 22:51:40,011 - jira_integration - INFO - Closed: 0
+2025-08-11 22:51:40,011 - jira_integration - INFO - Todo: 0
+2025-08-11 22:51:40,011 - jira_integration - INFO - Last Updated: 2025-08-11T22:51:40.008223

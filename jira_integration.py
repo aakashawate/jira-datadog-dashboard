@@ -10,10 +10,12 @@ Version: 1.0
 """
 
 import os
+import json
 import mysql.connector
 import requests
 import logging
 from datetime import datetime
+from pathlib import Path
 
 # ============================================================================
 # CONFIGURATION
@@ -23,22 +25,32 @@ class Config:
     """Application configuration settings"""
     
     # ============================================================================
-    # UPDATE THESE CREDENTIALS FOR YOUR SERVER
+    # JIRA CREDENTIALS - UPDATED
     # ============================================================================
     
-    # Jira Configuration
-    JIRA_BASE_URL = "YOUR_JIRA_URL"           # e.g., "https://yourcompany.atlassian.net"
-    JIRA_EMAIL = "YOUR_EMAIL"                 # e.g., "user@company.com"
-    JIRA_API_TOKEN = "YOUR_API_TOKEN"         # Generate from Jira settings
-    JIRA_PROJECT_ID = "YOUR_PROJECT_ID"       # e.g., "10000"
+    # Jira Configuration - Donation Platform Only
+    JIRA_BASE_URL = "https://tseljira.atlassian.net"
+    JIRA_EMAIL = "saiakki37@gmail.com"
+    JIRA_API_TOKEN = "ATATT3xFfGF0T3Z-hQti6F4mZY6wKxYWug2xv5eCem4dCo-LjPe_lpCag3Ph2drfyrGNPgFtEtlHwyosBdA_HUHlOjuJbHJBgpSzfjtKdevFMSjuiq8X-TCfcsH2LBe5sZUvBY8aNnQ0-YzmyZ992txcFg-xZt8lMp2RrFE_e9zUI1VIXIsjDk4=7C06EFA9"
+    JIRA_PROJECT_ID = "10000"  # Donation Platform (DP)
+    JIRA_PROJECT_KEY = "DP"    # Project key for Donation Platform
     JIRA_MAX_RESULTS = 100
     
-    # Database Configuration
-    DB_HOST = os.getenv('DB_HOST', 'YOUR_DB_HOST')           # e.g., 'localhost'
+    # Storage Configuration
+    USE_DATABASE = os.getenv('USE_DATABASE', 'false').lower() == 'true'  # Set to True for DB, False for file system
+    
+    # File System Configuration - Donation Platform specific
+    DATA_DIR = os.getenv('DATA_DIR', 'donation_platform_data')
+    PROJECTS_FILE = os.path.join(DATA_DIR, 'donation_project.json')
+    ISSUES_FILE = os.path.join(DATA_DIR, 'donation_issues.json')
+    BACKUP_DIR = os.path.join(DATA_DIR, 'backups')
+    
+    # Database Configuration - Donation Platform specific
+    DB_HOST = os.getenv('DB_HOST', 'localhost')
     DB_PORT = int(os.getenv('DB_PORT', '3306'))
-    DB_USERNAME = os.getenv('DB_USER', 'YOUR_DB_USER')       # e.g., 'jira_user'
-    DB_PASSWORD = os.getenv('DB_PASSWORD', 'YOUR_DB_PASSWORD')   # Your database password
-    DB_DATABASE = os.getenv('DB_NAME', 'YOUR_DB_NAME')       # e.g., 'jira_monitoring'
+    DB_USERNAME = os.getenv('DB_USER', 'donation_user')
+    DB_PASSWORD = os.getenv('DB_PASSWORD', 'donation_password')
+    DB_DATABASE = os.getenv('DB_NAME', 'donation_platform')
 
 # ============================================================================
 # DATABASE OPERATIONS
@@ -210,6 +222,202 @@ class Database:
             logger.info("Database connection closed")
 
 # ============================================================================
+# FILE SYSTEM STORAGE
+# ============================================================================
+
+class FileSystemStorage:
+    """File system storage for Jira data"""
+    
+    def __init__(self):
+        self.ensure_directories()
+    
+    def ensure_directories(self):
+        """Create necessary directories"""
+        Path(Config.DATA_DIR).mkdir(exist_ok=True)
+        Path(Config.BACKUP_DIR).mkdir(exist_ok=True)
+        logger.info("File system directories initialized")
+    
+    def create_backup(self):
+        """Create backup of existing data"""
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        
+        # Backup projects
+        if os.path.exists(Config.PROJECTS_FILE):
+            backup_projects = os.path.join(Config.BACKUP_DIR, f"projects_{timestamp}.json")
+            os.rename(Config.PROJECTS_FILE, backup_projects)
+            logger.info(f"Projects backed up to {backup_projects}")
+        
+        # Backup issues
+        if os.path.exists(Config.ISSUES_FILE):
+            backup_issues = os.path.join(Config.BACKUP_DIR, f"issues_{timestamp}.json")
+            os.rename(Config.ISSUES_FILE, backup_issues)
+            logger.info(f"Issues backed up to {backup_issues}")
+    
+    def save_issues(self, project_data, issues_data):
+        """Save project and issues to JSON files"""
+        try:
+            # Create backup first
+            self.create_backup()
+            
+            # Save project data
+            project_with_timestamp = {
+                **project_data,
+                'last_updated': datetime.now().isoformat(),
+                'issues_count': len(issues_data)
+            }
+            
+            with open(Config.PROJECTS_FILE, 'w', encoding='utf-8') as f:
+                json.dump(project_with_timestamp, f, indent=2, ensure_ascii=False, default=str)
+            
+            # Save issues data
+            issues_with_metadata = {
+                'project_id': project_data['id'],
+                'project_key': project_data['key'],
+                'last_updated': datetime.now().isoformat(),
+                'total_issues': len(issues_data),
+                'issues': issues_data
+            }
+            
+            with open(Config.ISSUES_FILE, 'w', encoding='utf-8') as f:
+                json.dump(issues_with_metadata, f, indent=2, ensure_ascii=False, default=str)
+            
+            logger.info(f"Saved {len(issues_data)} issues to file system")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Failed to save to file system: {e}")
+            return False
+    
+    def load_issues(self):
+        """Load issues from file system"""
+        try:
+            if not os.path.exists(Config.ISSUES_FILE):
+                return None
+            
+            with open(Config.ISSUES_FILE, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            return data
+            
+        except Exception as e:
+            logger.error(f"Failed to load issues: {e}")
+            return None
+    
+    def load_project(self):
+        """Load project from file system"""
+        try:
+            if not os.path.exists(Config.PROJECTS_FILE):
+                return None
+            
+            with open(Config.PROJECTS_FILE, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            return data
+            
+        except Exception as e:
+            logger.error(f"Failed to load project: {e}")
+            return None
+    
+    def get_stats(self):
+        """Get project statistics from file system"""
+        try:
+            data = self.load_issues()
+            if not data or 'issues' not in data:
+                return None
+            
+            issues = data['issues']
+            stats = {
+                'total_issues': len(issues),
+                'active_issues': sum(1 for issue in issues if issue.get('status', '').lower() in ['in progress', 'open', 'reopened']),
+                'closed_issues': sum(1 for issue in issues if issue.get('status', '').lower() in ['closed', 'resolved', 'done']),
+                'todo_issues': sum(1 for issue in issues if issue.get('status', '').lower() == 'to do'),
+                'last_updated': data.get('last_updated', 'Unknown')
+            }
+            
+            return stats
+            
+        except Exception as e:
+            logger.error(f"Failed to get file system stats: {e}")
+            return None
+    
+    def get_file_paths(self):
+        """Get paths to data files"""
+        return {
+            'projects_file': Config.PROJECTS_FILE,
+            'issues_file': Config.ISSUES_FILE,
+            'data_dir': Config.DATA_DIR,
+            'backup_dir': Config.BACKUP_DIR
+        }
+
+# ============================================================================
+# STORAGE FACTORY
+# ============================================================================
+
+class StorageFactory:
+    """Factory to create appropriate storage based on configuration"""
+    
+    @staticmethod
+    def create_storage():
+        """Create storage instance based on configuration"""
+        if Config.USE_DATABASE:
+            logger.info("Using Database storage")
+            return Database()
+        else:
+            logger.info("Using File System storage")
+            return FileSystemStorage()
+
+# ============================================================================
+# UNIVERSAL STORAGE INTERFACE
+# ============================================================================
+
+class StorageManager:
+    """Universal storage manager that works with both DB and File System"""
+    
+    def __init__(self):
+        self.storage = StorageFactory.create_storage()
+        self.is_database = isinstance(self.storage, Database)
+    
+    def initialize(self):
+        """Initialize storage (connect to DB or create directories)"""
+        if self.is_database:
+            success = self.storage.connect()
+            if success:
+                success = self.storage.init_tables()
+            return success
+        else:
+            self.storage.ensure_directories()
+            return True
+    
+    def save_data(self, project_data, issues_data):
+        """Save data using appropriate storage method"""
+        return self.storage.save_issues(project_data, issues_data)
+    
+    def get_statistics(self):
+        """Get statistics from storage"""
+        return self.storage.get_stats()
+    
+    def cleanup(self):
+        """Cleanup storage connections"""
+        if self.is_database:
+            self.storage.close()
+        # File system doesn't need cleanup
+    
+    def get_storage_info(self):
+        """Get storage configuration info"""
+        if self.is_database:
+            return {
+                'type': 'Database',
+                'host': Config.DB_HOST,
+                'database': Config.DB_DATABASE,
+                'user': Config.DB_USERNAME
+            }
+        else:
+            return {
+                'type': 'File System',
+                **self.storage.get_file_paths()
+            }
+
+# ============================================================================
 # JIRA CLIENT
 # ============================================================================
 
@@ -296,7 +504,7 @@ class JiraClient:
 # ============================================================================
 
 def setup_database():
-    """Setup database and user for Jira integration"""
+    """Setup database and user for Donation Platform Jira integration"""
     
     # Configuration for database setup
     DB_ROOT_PASSWORD = input("Enter MySQL root password: ")
@@ -310,24 +518,24 @@ def setup_database():
         )
         cursor = connection.cursor()
         
-        print("Creating database...")
+        print("Creating Donation Platform database...")
         cursor.execute(f"CREATE DATABASE IF NOT EXISTS {Config.DB_DATABASE}")
         
-        print("Creating user...")
+        print("Creating Donation Platform database user...")
         cursor.execute(f"CREATE USER IF NOT EXISTS '{Config.DB_USERNAME}'@'%' IDENTIFIED BY '{Config.DB_PASSWORD}'")
         cursor.execute(f"GRANT ALL PRIVILEGES ON {Config.DB_DATABASE}.* TO '{Config.DB_USERNAME}'@'%'")
         cursor.execute("FLUSH PRIVILEGES")
         
-        print("Database setup completed successfully!")
+        print("Donation Platform database setup completed successfully!")
         print(f"Database: {Config.DB_DATABASE}")
         print(f"User: {Config.DB_USERNAME}")
-        print("Update the Config class with your actual credentials")
+        print("Your Donation Platform Jira integration is ready!")
         
         cursor.close()
         connection.close()
         
     except Exception as e:
-        print(f"Setup failed: {e}")
+        print(f"Database setup failed: {e}")
 
 # ============================================================================
 # MAIN EXECUTION
@@ -338,7 +546,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('jira_sync.log'),
+        logging.FileHandler('donation_platform_sync.log'),
         logging.StreamHandler()
     ]
 )
@@ -346,63 +554,144 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 def main():
-    """Main synchronization function"""
-    logger.info("Starting Jira to Database sync...")
+    """Main synchronization function for Donation Platform project"""
+    logger.info("Starting Donation Platform Jira sync...")
     
     # Initialize clients
     jira = JiraClient()
-    db = Database()
+    storage = StorageManager()
     
     try:
-        # Connect to database
-        if not db.connect():
-            logger.error("Failed to connect to database")
-            return
+        # Show storage configuration
+        storage_info = storage.get_storage_info()
+        logger.info(f"Storage Type: {storage_info['type']}")
+        logger.info(f"Project: Donation Platform (DP) - ID: {Config.JIRA_PROJECT_ID}")
         
-        # Initialize database tables
-        if not db.init_tables():
-            logger.error("Failed to initialize database tables")
+        if storage_info['type'] == 'File System':
+            logger.info(f"Data Directory: {storage_info['data_dir']}")
+        else:
+            logger.info(f"Database: {storage_info['database']} at {storage_info['host']}")
+        
+        # Initialize storage
+        if not storage.initialize():
+            logger.error("Failed to initialize storage")
             return
         
         # Get project data
-        logger.info("Fetching project data...")
+        logger.info("Fetching Donation Platform project data...")
         project = jira.get_project()
         if not project:
-            logger.error("Failed to fetch project data")
+            logger.error("Failed to fetch Donation Platform project data")
             return
+        
+        # Verify it's the correct project
+        if project.get('key') != Config.JIRA_PROJECT_KEY:
+            logger.warning(f"Expected project key '{Config.JIRA_PROJECT_KEY}' but got '{project.get('key')}'")
+        
+        logger.info(f"Project: {project.get('name', 'Unknown')} ({project.get('key', 'Unknown')})")
         
         # Get issues data
-        logger.info("Fetching issues data...")
+        logger.info("Fetching Donation Platform issues...")
         issues = jira.get_all_issues()
         if not issues:
-            logger.error("Failed to fetch issues data")
+            logger.error("Failed to fetch Donation Platform issues")
             return
         
-        # Save to database
-        logger.info(f"Saving {len(issues)} issues to database...")
-        if db.save_issues(project, issues):
-            logger.info("Sync completed successfully!")
+        # Save to storage
+        logger.info(f"Saving {len(issues)} Donation Platform issues to {storage_info['type'].lower()}...")
+        if storage.save_data(project, issues):
+            logger.info("Donation Platform sync completed successfully!")
             
             # Show stats
-            stats = db.get_stats()
+            stats = storage.get_statistics()
             if stats:
-                logger.info(f"Total Issues: {stats['total_issues']}")
-                logger.info(f"Active: {stats['active_issues']}")
-                logger.info(f"Closed: {stats['closed_issues']}")
-                logger.info(f"Todo: {stats['todo_issues']}")
+                logger.info("=== DONATION PLATFORM STATISTICS ===")
+                logger.info(f"Total Issues: {stats.get('total_issues', 0)}")
+                logger.info(f"Active: {stats.get('active_issues', 0)}")
+                logger.info(f"Closed: {stats.get('closed_issues', 0)}")
+                logger.info(f"Todo: {stats.get('todo_issues', 0)}")
+                if 'last_updated' in stats:
+                    logger.info(f"Last Updated: {stats['last_updated']}")
         else:
-            logger.error("Failed to save to database")
+            logger.error("Failed to save Donation Platform data to storage")
     
     except Exception as e:
-        logger.error(f"Sync failed: {e}")
+        logger.error(f"Donation Platform sync failed: {e}")
+        import traceback
+        logger.error(traceback.format_exc())
     
     finally:
-        db.close()
+        storage.cleanup()
 
 if __name__ == "__main__":
     import sys
     
-    if len(sys.argv) > 1 and sys.argv[1] == "--setup":
-        setup_database()
+    def show_help():
+        """Show help information"""
+        print(f"""
+Donation Platform Jira Integration Tool
+
+Usage:
+    python jira_integration.py                    # Sync Donation Platform data
+    python jira_integration.py --setup            # Setup database (if using DB)
+    python jira_integration.py --filesystem       # Force use file system
+    python jira_integration.py --database         # Force use database
+    python jira_integration.py --stats            # Show current statistics
+    python jira_integration.py --help             # Show this help
+
+Configuration:
+    - Configured for Donation Platform project only
+    - Set USE_DATABASE environment variable to 'true' for database mode
+    - Default mode is file system storage in 'donation_platform_data/' directory
+
+Current Configuration:
+    - Jira URL: {Config.JIRA_BASE_URL}
+    - Project: Donation Platform (DP)
+    - Project ID: {Config.JIRA_PROJECT_ID}
+    - Storage: {'Database' if Config.USE_DATABASE else 'File System'}
+        """)
+    
+    def show_stats_only():
+        """Show Donation Platform statistics without running sync"""
+        storage = StorageManager()
+        if not storage.initialize():
+            print("Failed to initialize storage")
+            return
+        
+        stats = storage.get_statistics()
+        if stats:
+            print("=== DONATION PLATFORM STATISTICS ===")
+            print(f"Total Issues: {stats.get('total_issues', 0)}")
+            print(f"Active: {stats.get('active_issues', 0)}")
+            print(f"Closed: {stats.get('closed_issues', 0)}")
+            print(f"Todo: {stats.get('todo_issues', 0)}")
+            if 'last_updated' in stats:
+                print(f"Last Updated: {stats['last_updated']}")
+        else:
+            print("No Donation Platform statistics available")
+        
+        storage.cleanup()
+    
+    # Parse command line arguments
+    if len(sys.argv) > 1:
+        arg = sys.argv[1].lower()
+        
+        if arg == "--setup":
+            setup_database()
+        elif arg == "--filesystem":
+            Config.USE_DATABASE = False
+            print("Forced file system mode for Donation Platform")
+            main()
+        elif arg == "--database":
+            Config.USE_DATABASE = True
+            print("Forced database mode for Donation Platform")
+            main()
+        elif arg == "--stats":
+            show_stats_only()
+        elif arg in ["--help", "-h", "help"]:
+            show_help()
+        else:
+            print(f"Unknown argument: {arg}")
+            show_help()
     else:
         main()

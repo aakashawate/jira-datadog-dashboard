@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tab Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .tab { padding: 10px 20px; margin: 5px; background: #ddd; cursor: pointer; display: inline-block; }
+        .tab.active { background: #3182ce; color: white; }
+        .section { display: none; padding: 20px; border: 1px solid #ddd; margin-top: 10px; }
+        .section.active { display: block; }
+    </style>
+</head>
+<body>
+    <h1>Tab Functionality Test</h1>
+    
+    <div class="tabs">
+        <span class="tab active" data-section="jira">Jira Tab</span>
+        <span class="tab" data-section="datadog">DataDog Tab</span>
+    </div>
+    
+    <div id="jiraSection" class="section active">
+        <h2>Jira Section</h2>
+        <p>This is the Jira content. You should see this by default.</p>
+    </div>
+    
+    <div id="datadogSection" class="section">
+        <h2>DataDog Section</h2>
+        <p>This is the DataDog content. You should see this when clicking the DataDog tab.</p>
+    </div>
+    
+    <script>
+        function switchTab(targetSection) {
+            console.log('Switching to:', targetSection);
+            
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show target section
+            document.getElementById(targetSection + 'Section').classList.add('active');
+            
+            // Activate clicked tab
+            document.querySelector(`[data-section="${targetSection}"]`).classList.add('active');
+        }
+        
+        // Initialize
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                const section = e.target.getAttribute('data-section');
+                switchTab(section);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+{
+  "expand": "description,lead,issueTypes,url,projectKeys,permissions,insight",
+  "self": "https://tseljira.atlassian.net/rest/api/3/project/10000",
+  "id": "10000",
+  "key": "DP",
+  "description": "Your first project",
+  "lead": {
+    "self": "https://tseljira.atlassian.net/rest/api/3/user?accountId=712020:1aaeaba0-86c4-4b48-8b0d-68ff8304732a",
+    "accountId": "712020:1aaeaba0-86c4-4b48-8b0d-68ff8304732a",
+    "avatarUrls": {
+      "48x48": "https://secure.gravatar.com/avatar/8f7016499c1aa1473062454df205416e?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAA-2.png",
+      "24x24": "https://secure.gravatar.com/avatar/8f7016499c1aa1473062454df205416e?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAA-2.png",
+      "16x16": "https://secure.gravatar.com/avatar/8f7016499c1aa1473062454df205416e?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAA-2.png",
+      "32x32": "https://secure.gravatar.com/avatar/8f7016499c1aa1473062454df205416e?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAA-2.png"
+    },
+    "displayName": "Aakash Awate",
+    "active": true
+  },
+  "components": [],
+  "issueTypes": [
+    {
+      "self": "https://tseljira.atlassian.net/rest/api/3/issuetype/10001",
+      "id": "10001",
+      "description": "Epics track collections of related bugs, stories, and tasks.",
+      "iconUrl": "https://tseljira.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10307?size=medium",
+      "name": "Epic",
+      "subtask": false,
+      "avatarId": 10307,
+      "hierarchyLevel": 1
+    },
+    {
+      "self": "https://tseljira.atlassian.net/rest/api/3/issuetype/10002",
+      "id": "10002",
+      "description": "Subtasks track small pieces of work that are part of a larger task.",
+      "iconUrl": "https://tseljira.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10316?size=medium",
+      "name": "Subtask",
+      "subtask": true,
+      "avatarId": 10316,
+      "hierarchyLevel": -1
+    },
+    {
+      "self": "https://tseljira.atlassian.net/rest/api/3/issuetype/10003",
+      "id": "10003",
+      "description": "Tasks track small, distinct pieces of work.",
+      "iconUrl": "https://tseljira.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10318?size=medium",
+      "name": "Task",
+      "subtask": false,
+      "avatarId": 10318,
+      "hierarchyLevel": 0
+    },
+    {
+      "self": "https://tseljira.atlassian.net/rest/api/3/issuetype/10004",
+      "id": "10004",
+      "description": "Stories track functionality or features expressed as user goals.",
+      "iconUrl": "https://tseljira.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+      "name": "Story",
+      "subtask": false,
+      "avatarId": 10315,
+      "hierarchyLevel": 0
+    }
+  ],
+  "assigneeType": "UNASSIGNED",
+  "versions": [],
+  "name": "Donation Platform",
+  "roles": {
+    "atlassian-addons-project-access": "https://tseljira.atlassian.net/rest/api/3/project/10000/role/10007",
+    "Administrator": "https://tseljira.atlassian.net/rest/api/3/project/10000/role/10004",
+    "Viewer": "https://tseljira.atlassian.net/rest/api/3/project/10000/role/10006",
+    "Member": "https://tseljira.atlassian.net/rest/api/3/project/10000/role/10005"
+  },
+  "avatarUrls": {
+    "48x48": "https://tseljira.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10402",
+    "24x24": "https://tseljira.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10402?size=small",
+    "16x16": "https://tseljira.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10402?size=xsmall",
+    "32x32": "https://tseljira.atlassian.net/rest/api/3/universal_avatar/view/type/project/avatar/10402?size=medium"
+  },
+  "projectTypeKey": "software",
+  "simplified": true,
+  "style": "next-gen",
+  "isPrivate": false,
+  "properties": {},
+  "entityId": "0fea562d-9be9-4aa4-afb4-1b82c0b3dda3",
+  "uuid": "0fea562d-9be9-4aa4-afb4-1b82c0b3dda3",
+  "last_updated": "2025-08-11T23:10:07.426880",
+  "issues_count": 8
+}
