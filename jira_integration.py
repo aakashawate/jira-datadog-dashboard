@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Jira to Database Integration
+Jira to Database Integration with Comprehensive Logging
 
 Complete integration solution for syncing Jira issues to MySQL database.
 Includes configuration, database operations, Jira API client, and main execution.
@@ -15,17 +15,23 @@ import requests
 import logging
 from datetime import datetime
 from pathlib import Path
+from utils import Logger
+
+# Initialize logger for this module
+logger = Logger.get_logger('jira_integration')
 
 # Optional MySQL import - only if database storage is needed
 try:
     import mysql.connector
     MYSQL_AVAILABLE = True
+    logger.info("MySQL connector available")
 except ImportError:
     MYSQL_AVAILABLE = False
-    print("ℹ️  MySQL connector not available - using file system storage only")
+    logger.warning("MySQL connector not available - using file system storage only")
 
 # Import configuration from central config file
 import config
+logger.info("Configuration imported from config.py")
 
 # ============================================================================
 # CONFIGURATION
@@ -428,38 +434,48 @@ class StorageManager:
 # ============================================================================
 
 class JiraClient:
-    """Jira API client for fetching project and issue data"""
+    """Jira API client for fetching project and issue data with comprehensive logging"""
     
     def __init__(self):
         self.session = requests.Session()
         self.session.auth = (Config.JIRA_EMAIL, Config.JIRA_API_TOKEN)
+        logger.info(f"Initialized JiraClient for {Config.JIRA_BASE_URL} with user {Config.JIRA_EMAIL}")
         
     def get_project(self):
-        """Get project details - try both ID and key"""
+        """Get project details - try both ID and key with logging"""
         # First try with project ID
         url = f"{Config.JIRA_BASE_URL}/rest/api/3/project/{Config.JIRA_PROJECT_ID}"
         
         try:
+            logger.info(f"Fetching project by ID: {Config.JIRA_PROJECT_ID}")
             response = self.session.get(url)
             response.raise_for_status()
-            return response.json()
+            project_data = response.json()
+            logger.info(f"Successfully fetched project: {project_data.get('name', 'Unknown')}")
+            return project_data
         except Exception as e:
-            logger.info(f"Failed to get project by ID {Config.JIRA_PROJECT_ID}: {e}")
+            logger.warning(f"Failed to get project by ID {Config.JIRA_PROJECT_ID}: {e}")
             
             # Try with project key
             url = f"{Config.JIRA_BASE_URL}/rest/api/3/project/{Config.JIRA_PROJECT_KEY}"
             try:
+                logger.info(f"Fetching project by key: {Config.JIRA_PROJECT_KEY}")
                 response = self.session.get(url)
                 response.raise_for_status()
-                return response.json()
+                project_data = response.json()
+                logger.info(f"Successfully fetched project by key: {project_data.get('name', 'Unknown')}")
+                return project_data
             except Exception as e2:
                 logger.error(f"Failed to get project by key {Config.JIRA_PROJECT_KEY}: {e2}")
                 return None
     
     def get_all_issues(self):
-        """Get all issues from the project"""
+        """Get all issues from the project with comprehensive logging"""
         issues = []
         start_at = 0
+        total_fetched = 0
+        
+        logger.info(f"Starting to fetch all issues for project {Config.JIRA_PROJECT_KEY}")
         
         while True:
             url = f"{Config.JIRA_BASE_URL}/rest/api/3/search"
@@ -471,6 +487,7 @@ class JiraClient:
             }
             
             try:
+                logger.debug(f"Fetching issues batch: startAt={start_at}, maxResults={Config.JIRA_MAX_RESULTS}")
                 response = self.session.get(url, params=params)
                 response.raise_for_status()
                 data = response.json()
@@ -495,29 +512,64 @@ class JiraClient:
                         'assigned_to': issue['fields']['assignee']['displayName'] if issue['fields'].get('assignee') else 'Unassigned'
                     }
                     batch_issues.append(processed)
+                    
+                    # Log individual issue details for debugging
+                    logger.debug(f"Processed issue {processed['key']}: {processed['summary'][:50]}...")
                 
                 issues.extend(batch_issues)
-                logger.info(f"Fetched {len(batch_issues)} issues (total: {len(issues)})")
+                total_fetched += len(batch_issues)
+                logger.info(f"Fetched {len(batch_issues)} issues in this batch (total: {total_fetched})")
                 
                 if len(data['issues']) < Config.JIRA_MAX_RESULTS:
+                    logger.info(f"Completed fetching all issues. Total: {total_fetched}")
                     break
                     
                 start_at += Config.JIRA_MAX_RESULTS
                 
+            except requests.exceptions.RequestException as e:
+                logger.error(f"HTTP error while fetching issues: {str(e)}")
+                if hasattr(e, 'response') and e.response is not None:
+                    logger.error(f"Response status: {e.response.status_code}")
+                    logger.error(f"Response text: {e.response.text[:500]}")
+                break
             except Exception as e:
-                logger.error(f"Failed to fetch issues: {e}")
+                logger.error(f"Unexpected error while fetching issues: {str(e)}", exc_info=True)
                 break
         
+        logger.info(f"Successfully fetched {len(issues)} issues from project {Config.JIRA_PROJECT_KEY}")
         return issues
     
     def _parse_date(self, date_str):
-        """Parse Jira date string to datetime"""
+        """Parse Jira date string to datetime with logging"""
         if not date_str:
             return None
         try:
-            return datetime.fromisoformat(date_str.replace('Z', '+00:00'))
-        except:
+            parsed_date = datetime.fromisoformat(date_str.replace('Z', '+00:00'))
+            return parsed_date
+        except Exception as e:
+            logger.warning(f"Failed to parse date '{date_str}': {e}")
             return None
+    
+    def validate_connection(self):
+        """Validate Jira API connection with logging"""
+        try:
+            logger.info("Validating Jira API connection...")
+            url = f"{Config.JIRA_BASE_URL}/rest/api/3/myself"
+            response = self.session.get(url)
+            response.raise_for_status()
+            
+            user_info = response.json()
+            logger.info(f"Connection validated for user: {user_info.get('displayName', 'Unknown')}")
+            return True
+            
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Connection validation failed: {str(e)}")
+            if hasattr(e, 'response') and e.response is not None:
+                logger.error(f"Response status: {e.response.status_code}")
+            return False
+        except Exception as e:
+            logger.error(f"Unexpected error during connection validation: {str(e)}", exc_info=True)
+            return False
 
 # ============================================================================
 # DATABASE SETUP UTILITY
@@ -561,31 +613,23 @@ def setup_database():
 # MAIN EXECUTION
 # ============================================================================
 
-# Setup logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('donation_platform_sync.log'),
-        logging.StreamHandler()
-    ]
-)
-
-logger = logging.getLogger(__name__)
-
 def main():
-    """Main synchronization function for Donation Platform project"""
-    logger.info("Starting Donation Platform Jira sync...")
-    
-    # Initialize clients
-    jira = JiraClient()
-    storage = StorageManager()
+    """Main execution function with comprehensive logging"""
+    logger.info("=== STARTING DONATION PLATFORM JIRA SYNC ===")
     
     try:
-        # Show storage configuration
+        # Initialize components
+        jira = JiraClient()
+        storage = StorageManager()
+        
+        # Test Jira connection first
+        if not jira.validate_connection():
+            logger.error("Cannot connect to Jira API - check credentials and network")
+            return
+        
+        # Get storage info
         storage_info = storage.get_storage_info()
-        logger.info(f"Storage Type: {storage_info['type']}")
-        logger.info(f"Project: Donation Platform (DP) - ID: {Config.JIRA_PROJECT_ID}")
+        logger.info(f"Using {storage_info['type']} storage")
         
         if storage_info['type'] == 'File System':
             logger.info(f"Data Directory: {storage_info['data_dir']}")
@@ -648,6 +692,8 @@ def main():
 if __name__ == "__main__":
     import sys
     
+    logger.info("Starting jira_integration.py as main module")
+    
     def show_help():
         """Show help information"""
         print(f"""
@@ -675,9 +721,10 @@ Current Configuration:
     
     def show_stats_only():
         """Show Donation Platform statistics without running sync"""
+        logger.info("Showing Donation Platform statistics only")
         storage = StorageManager()
         if not storage.initialize():
-            print("Failed to initialize storage")
+            logger.error("Failed to initialize storage for statistics")
             return
         
         stats = storage.get_statistics()
@@ -689,23 +736,29 @@ Current Configuration:
             print(f"Todo: {stats.get('todo_issues', 0)}")
             if 'last_updated' in stats:
                 print(f"Last Updated: {stats['last_updated']}")
+            logger.info("Statistics displayed successfully")
         else:
             print("No Donation Platform statistics available")
+            logger.warning("No statistics data available")
         
         storage.cleanup()
     
     # Parse command line arguments
     if len(sys.argv) > 1:
         arg = sys.argv[1].lower()
+        logger.info(f"Command line argument provided: {arg}")
         
         if arg == "--setup":
+            logger.info("Running database setup")
             setup_database()
         elif arg == "--filesystem":
             Config.USE_DATABASE = False
+            logger.info("Forced file system mode for Donation Platform")
             print("Forced file system mode for Donation Platform")
             main()
         elif arg == "--database":
             Config.USE_DATABASE = True
+            logger.info("Forced database mode for Donation Platform")
             print("Forced database mode for Donation Platform")
             main()
         elif arg == "--stats":
@@ -713,7 +766,9 @@ Current Configuration:
         elif arg in ["--help", "-h", "help"]:
             show_help()
         else:
+            logger.warning(f"Unknown argument provided: {arg}")
             print(f"Unknown argument: {arg}")
             show_help()
     else:
+        logger.info("No command line arguments, running main sync")
         main()

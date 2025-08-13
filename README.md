@@ -1,570 +1,570 @@
-# 🚀 Jira-DataDog Unified Monitoring Dashboard
+# Jira-DataDog Live Monitoring Dashboard
 
-**A comprehensive monitoring solution that integrates Jira issue tracking with DataDog metrics in a unified web dashboard.**
-
-![Python](https://img.shields.io/badge/Python-3.13+-blue.svg)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
-![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen.svg)
-
----
+A professional live monitoring system that integrates Jira issues with DataDog dashboard visualization. This system provides real-time tracking of Jira issues with automatic data refresh, clean web interface, and comprehensive production-ready logging.
 
 ## 📋 Table of Contents
 
-- [🎯 Overview](#-overview)
-- [✨ Features](#-features)
-- [🏗️ Architecture](#-architecture)
-- [⚡ Quick Start](#-quick-start)
-- [🛠️ Installation](#-installation)
-- [🎮 Usage](#-usage)
-- [📁 Project Structure](#-project-structure)
-- [🔧 Configuration](#-configuration)
-- [🌐 Dashboard](#-dashboard)
-- [🐛 Troubleshooting](#-troubleshooting)
-- [📊 API Integration](#-api-integration)
-- [🔄 Data Flow](#-data-flow)
-- [📈 Monitoring](#-monitoring)
-- [🤝 Contributing](#-contributing)
+- [System Overview](#system-overview)
+- [Architecture & Design](#architecture--design)
+- [Code Structure](#code-structure)
+- [Setup & Installation](#setup--installation)
+- [Code Execution](#code-execution)
+- [Configuration](#configuration)
+- [Features](#features)
+- [Logging System](#logging-system)
+- [Data Flow](#data-flow)
+- [API Integration](#api-integration)
+- [Production Deployment](#production-deployment)
+- [Troubleshooting](#troubleshooting)
 
----
+## 🏗️ System Overview
 
-## 🎯 Overview
+### Purpose
+Live monitoring dashboard for Jira issues with integrated DataDog metrics visualization. The system fetches fresh Jira data every 5 minutes and displays it in a responsive web interface with comprehensive logging for production deployment.
 
-The Jira-DataDog Unified Monitoring Dashboard is a Python-based application that provides a centralized view of:
+### Key Components
+- **Jira Integration**: Fetches live issue data from Jira API
+- **Data Storage**: File-based storage with optional MySQL support  
+- **Live Dashboard**: Web server with auto-refresh capabilities
+- **Configuration Management**: Centralized configuration system
+- **Logging System**: Production-ready logging with rotation and monitoring
+- **Shared Utilities**: Code reusability and consistent operations
 
-- **🎫 Jira Issues**: Real-time issue tracking and project management data
-- **📊 DataDog Metrics**: System performance metrics (CPU, memory, disk, network)
-- **🌐 Web Dashboard**: Unified interface with auto-refresh capabilities
+## 🏛️ Architecture & Design
 
-Perfect for development teams, DevOps engineers, and project managers who need a single pane of glass for monitoring both project progress and system health.
-
----
-
-## ✨ Features
-
-### 🎫 **Jira Integration**
-- ✅ Always live data fetching (no cached mode)
-- ✅ Auto-refresh every 5 minutes for new issues
-- ✅ Real-time issue monitoring and updates
-- ✅ Complete field mapping (ID, Summary, Created, Assigned, etc.)
-- ✅ Continuous background monitoring
-- ✅ Robust error handling and connection recovery
-
-### 📊 **DataDog Integration**
-- ✅ System metrics (CPU, memory, disk, network)
-- ✅ Real-time data with historical trends
-- ✅ Mock data generation for development
-- ✅ Automatic failover handling
-
-### 🌐 **Web Dashboard**
-- ✅ Modern, responsive design
-- ✅ Live data visualization with auto-refresh
-- ✅ Real-time updates every 5 minutes
-- ✅ Cross-browser compatibility
-- ✅ Mobile-friendly interface
-- ✅ Continuous monitoring display
-
-### 🛠️ **Technical Features**
-- ✅ Single unified application (no separate scripts)
-- ✅ Always live data - never cached mode
-- ✅ Auto-refresh every 5 minutes continuously
-- ✅ Virtual environment support
-- ✅ Comprehensive error handling
-- ✅ Dual storage modes (Database/File System)
-- ✅ Background monitoring with graceful shutdown
-- ✅ Port conflict resolution
-
----
-
-## 🏗️ Architecture
+### System Architecture
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Jira API      │    │  DataDog API    │    │  Dashboard      │
-│                 │    │                 │    │  Server         │
-└─────────┬───────┘    └─────────┬───────┘    └─────────┬───────┘
-          │                      │                      │
-          ▼                      ▼                      ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                Python Pipeline (run_pipeline.py)               │
-├─────────────────┬─────────────────┬─────────────────────────────┤
-│ Jira Integration│DataDog Integration│    Dashboard Server       │
-│    Module       │     Module      │        Module             │
-└─────────┬───────┴─────────┬───────┴─────────┬───────────────────┘
-          ▼                 ▼                 ▼
-┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
-│   JSON Files    │ │  DataDog JSON   │ │   HTTP Server   │
-│   (File System) │ │     Metrics     │ │  (Port 8080)    │
-│       OR        │ │                 │ │                 │
-│   MySQL DB      │ │                 │ │                 │
-└─────────────────┘ └─────────────────┘ └─────────────────┘
+│   Jira API      │◄───│  Integration    │────►│  Data Storage   │
+│   (External)    │    │     Layer       │    │  (JSON Files)   │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+                                │
+                                ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Web Browser   │◄───│  Dashboard      │◄───│  Auto-Refresh   │
+│   (localhost)   │    │     Server      │    │    System       │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+                                │
+                                ▼
+                       ┌─────────────────┐
+                       │ Logging System  │
+                       │ (Production)    │
+                       └─────────────────┘
 ```
 
----
+### Design Principles
+- **Single Responsibility**: Each module handles one specific concern
+- **Configuration Centralization**: All settings in `config.py`
+- **Error Handling**: Graceful failure handling with logging
+- **Code Reusability**: Modular design for easy maintenance
+- **Professional Standards**: Clean code without symbols or clutter
 
-## ⚡ Quick Start
+## 📁 Code Structure
 
-**Get up and running in 2 commands:**
-
-```bash
-# 1. Create virtual environment and install dependencies
-python -m venv .venv
-.venv\Scripts\pip install -r requirements.txt
-
-# 2. Start the live monitoring system
-python run_pipeline.py
+### Core Files
+```
+├── run_pipeline.py           # Main entry point and orchestrator
+├── config.py                 # Centralized configuration management
+├── jira_integration.py       # Jira API client and data processing
+├── dashboard_server.py       # Web server with auto-refresh
+├── unified_dashboard.html    # Frontend dashboard interface
+├── requirements.txt          # Python dependencies
+└── README.md                 # This documentation
 ```
 
-**🚀 Single Command - Always Live Data:**
-- `python run_pipeline.py` - Start live monitoring system
-- Automatically fetches live Jira data every 5 minutes
-- Continuously monitors for new issues
-- No separate scripts needed - everything is unified!
+### Data Files
+```
+├── donation_platform_data/
+│   ├── donation_issues.json      # Current Jira issues data
+│   ├── donation_project.json     # Project metadata
+│   └── backups/                   # Automatic backups
+└── .venv/                         # Python virtual environment
+```
 
-**Stop the system:** `python run_pipeline.py --stop` or press Ctrl+C
+### Module Responsibilities
 
-**That's it! 🎉**
+#### `config.py` - Configuration Management
+- **Purpose**: Single source of truth for all system settings
+- **Reusability**: Imported by all other modules
+- **Contains**: Jira credentials, database settings, file paths, API limits
 
----
+#### `jira_integration.py` - Data Integration Layer  
+- **Purpose**: Handles all Jira API communication and data processing
+- **Reusability**: Can be used standalone or integrated
+- **Features**: OAuth authentication, data transformation, storage abstraction
 
-## 🛠️ Installation
+#### `dashboard_server.py` - Presentation Layer
+- **Purpose**: Web server with live data serving and auto-refresh
+- **Reusability**: Independent web server that can serve any JSON data
+- **Features**: Auto-refresh threading, CORS support, error handling
+
+#### `run_pipeline.py` - Orchestration Layer
+- **Purpose**: Main entry point that coordinates all components
+- **Reusability**: Template for similar monitoring systems
+- **Features**: Command-line interface, process management, graceful shutdown
+
+## ⚙️ Setup & Installation
 
 ### Prerequisites
-- Python 3.13+ (recommended)
-- Git
-- Internet connection for API calls
+- Python 3.8 or higher
+- Internet connection for Jira API access
+- Web browser for dashboard viewing
 
-### Step-by-Step Setup
+### Installation Steps
 
-1. **Clone the repository:**
+1. **Clone Repository**
    ```bash
-   git clone https://github.com/raditsama/JiraDataDog.git
-   cd JiraDataDog/jira-issues-fetch
+   git clone <repository-url>
+   cd jira-issues-fetch
    ```
 
-2. **Create virtual environment:**
+2. **Create Virtual Environment**
    ```bash
    python -m venv .venv
+   .venv\Scripts\Activate.ps1  # Windows PowerShell
+   # or
+   source .venv/bin/activate   # Linux/Mac
    ```
 
-3. **Activate virtual environment:**
-   ```bash
-   # Windows
-   .venv\Scripts\activate
-   
-   # Linux/Mac
-   source .venv/bin/activate
-   ```
-
-4. **Install dependencies:**
+3. **Install Dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-5. **Configure credentials (optional):**
-   Edit `config.py` with your API credentials:
-   ```python
-   JIRA_BASE_URL = "https://your-company.atlassian.net"
-   JIRA_EMAIL = "your.email@company.com"
-   JIRA_API_TOKEN = "your_api_token"
-   DATADOG_API_KEY = "your_datadog_api_key"
-   ```
-
-6. **Run the application:**
+4. **Configure System**
    ```bash
-   python run_pipeline.py
+   # Edit config.py with your Jira credentials
+   notepad config.py  # Windows
+   # or
+   nano config.py     # Linux/Mac
    ```
 
----
+5. **Test Configuration**
+   ```bash
+   python jira_integration.py  # Test Jira connection
+   ```
 
-## 🎮 Usage
+## 🚀 Code Execution
 
-### **Main Commands**
-
-| Command | Description | Use Case |
-|---------|-------------|----------|
-| `python run_pipeline.py` | **Full pipeline** (recommended) | Daily monitoring, fresh data |
-| `python run_pipeline.py --quick-start` | **Dashboard only** (cached data) | Quick access, demos |
-| `python run_pipeline.py --skip-jira` | **DataDog only** + dashboard | Jira API issues |
-| `python run_pipeline.py --skip-datadog` | **Jira only** + dashboard | DataDog API issues |
-| `python run_pipeline.py --stop` | **Stop servers** | Cleanup, troubleshooting |
-| `python run_pipeline.py --help` | **Show help** | View all options |
-
-### **Example Workflows**
-
-**🌅 Daily Startup:**
+### Quick Start
 ```bash
+# Start the complete monitoring system
 python run_pipeline.py
 ```
 
-**🚀 Quick Demo:**
+### Advanced Usage
 ```bash
+# Start with existing data (skip fresh fetch)
 python run_pipeline.py --quick-start
-```
 
-**🔧 Troubleshooting:**
-```bash
-# Clear any port conflicts
+# Dashboard only mode
+python run_pipeline.py --dashboard-only
+
+# Stop running servers
 python run_pipeline.py --stop
-
-# Skip problematic APIs
-python run_pipeline.py --skip-jira --skip-datadog
 ```
 
----
+### Execution Flow
 
-## 📁 Project Structure
+1. **System Initialization**
+   - Virtual environment validation
+   - Dependency checking
+   - Configuration loading
 
-```
-jira-issues-fetch/
-├── 🚀 run_pipeline.py              # Main execution script
-├── ⚙️ config.py                    # Configuration settings
-├── 🎫 jira_integration.py          # Jira API client
-├── 📊 datadog_integration.py       # DataDog metrics client
-├── 🌐 dashboard_server.py          # Web server
-├── 🎨 unified_dashboard.html       # Dashboard frontend
-├── 📋 requirements.txt             # Python dependencies
-├── 🔧 project_switcher.py          # Multi-project utility
-├── 📖 EXECUTION_GUIDE.md           # Detailed usage guide
-│
-├── 📁 data/                        # Jira data (legacy)
-│   ├── issues.json
-│   ├── projects.json
-│   └── backups/
-│
-├── 📁 donation_platform_data/      # Current Jira data
-│   ├── donation_issues.json
-│   └── donation_project.json
-│
-├── 📁 .venv/                       # Virtual environment
-└── 📁 .git/                        # Git repository
-```
+2. **Data Fetch Phase**
+   - Jira API authentication
+   - Project metadata retrieval
+   - Issues data collection
+   - Data validation and storage
 
-### **Key Files Explained**
+3. **Dashboard Launch**
+   - Web server startup on port 8080
+   - Auto-refresh thread initialization
+   - Browser launch
+   - Continuous monitoring
 
-- **`run_pipeline.py`** - Single entry point for the entire application
-- **`config.py`** - Centralized configuration (API keys, URLs, settings)
-- **`jira_integration.py`** - Handles Jira API calls and data processing
-- **`datadog_integration.py`** - Fetches DataDog metrics with fallback to mock data
-- **`dashboard_server.py`** - HTTP server that serves the web dashboard
-- **`unified_dashboard.html`** - Modern web interface with real-time updates
+4. **Runtime Operations**
+   - Automatic data refresh every 5 minutes
+   - Real-time dashboard updates
+   - Error logging and recovery
+   - Graceful shutdown handling
 
----
+## ⚙️ Configuration
 
-## 🔧 Configuration
-
-### **Main Configuration File: `config.py`**
+### Primary Configuration (`config.py`)
 
 ```python
 # Jira Settings
-JIRA_BASE_URL = "https://tseljira.atlassian.net"
-JIRA_EMAIL = "your-email@domain.com"
-JIRA_API_TOKEN = "your_jira_token"
+JIRA_BASE_URL = "https://your-domain.atlassian.net"
+JIRA_EMAIL = "your-email@example.com" 
+JIRA_API_TOKEN = "your-api-token"
 JIRA_PROJECT_ID = "10000"
 
-# DataDog Settings  
-DATADOG_API_KEY = "your_datadog_api_key"
-
-# Storage Mode
-USE_DATABASE = False  # True for MySQL, False for JSON files
-
-# Database Settings (if USE_DATABASE = True)
-DB_HOST = "localhost"
-DB_USERNAME = "jira_user"  
-DB_PASSWORD = "your_password"
-DB_DATABASE = "jira_monitoring"
+# System Settings
+JIRA_MAX_RESULTS = 100
+REFRESH_INTERVAL = 300  # 5 minutes
+USE_DATABASE = False    # True for MySQL, False for files
 ```
 
-### **Environment Variables (Optional)**
-
+### Environment Variables (Optional)
 ```bash
-# Override config.py settings
-export JIRA_PROJECT_ID="10001"
-export USE_DATABASE="true"
-export DB_PASSWORD="secure_password"
+export USE_DATABASE=false
+export DATA_DIR=donation_platform_data
+export DB_HOST=localhost
+export DB_PORT=3306
 ```
 
-### **Storage Modes**
+### Jira API Token Setup
+1. Go to Jira → Account Settings → Security
+2. Create API Token
+3. Copy token to `config.py`
 
-**📁 File System (Default):**
-- Data stored in JSON files
-- Automatic backups
-- No database required
-- Perfect for development
+## ✨ Features
 
-**🗄️ Database Mode:**
-- MySQL database storage
-- Production-ready
-- Set `USE_DATABASE = True` in config.py
+### Core Features
+- **Live Data Fetching**: Fresh Jira data every 5 minutes
+- **Web Dashboard**: Responsive HTML interface at `localhost:8080`
+- **Auto-Refresh**: Background data updates without manual intervention
+- **DataDog Integration**: Embedded DataDog dashboard iframe
+- **Error Recovery**: Graceful handling of API failures
 
----
+### Dashboard Features
+- **Issue Statistics**: Count by status (To Do, In Progress, In Review, Done)
+- **Real-time Updates**: Automatic data refresh with cache-busting
+- **Responsive Design**: Works on desktop and mobile browsers
+- **Status Visualization**: Color-coded issue status indicators
 
-## 🌐 Dashboard
+### Technical Features
+- **Modular Design**: Reusable components
+- **Configuration Management**: Centralized settings
+- **Logging System**: Comprehensive error and info logging
+- **Backup System**: Automatic data backups
+- **Cross-Platform**: Works on Windows, Linux, Mac
 
-### **Access**
-- **URL**: http://localhost:8080
-- **Auto-refresh**: Every 5 minutes
-- **Mobile-friendly**: Responsive design
+## 📊 Logging System
 
-### **Dashboard Features**
+### Overview
+The system includes comprehensive production-ready logging designed for Linux server deployment. The logging system provides detailed tracking, debugging capabilities, and error monitoring across all components.
 
-**📊 DataDog Metrics Section:**
-- Real-time system metrics visualization
-- CPU, Memory, Disk, and Network charts
-- Historical data trends
-- Automatic mock data fallback
+### Log Files Structure
+```
+logs/
+├── jira_integration.log    # Jira API interactions, data fetching
+├── dashboard_server.log    # Web server operations, HTTP requests
+├── pipeline.log           # Main orchestration, monitoring cycles
+├── system_utils.log       # System operations, environment checks
+└── system_critical.log    # Critical system events, failures
+```
 
-**🎫 Jira Issues Section:**
-- Issue count by status
-- Recent activity timeline
-- Project statistics
-- Search and filter capabilities
+### Key Features
+- **Automatic Rotation**: Log files rotate at 10MB with 5 backups
+- **Multiple Levels**: DEBUG, INFO, WARNING, ERROR with filtering
+- **Detailed Format**: Timestamp, module, level, filename, line number
+- **Exception Tracking**: Full stack traces for debugging
+- **Production Ready**: Designed for Linux server monitoring
 
-**🔄 Real-time Updates:**
-- Automatic data refresh
-- Live status indicators
-- Connection health monitoring
-
-### **Dashboard Screenshots**
-
-The dashboard provides:
-- Clean, modern interface
-- Real-time metric charts
-- Jira issue summaries
-- Status indicators
-- Mobile-responsive design
-
----
-
-## 🐛 Troubleshooting
-
-### **Common Issues & Solutions**
-
-**🔌 Port 8080 in use:**
+### Usage Examples
 ```bash
-python run_pipeline.py --stop
+# Monitor all logs in real-time
+tail -f logs/*.log
+
+# Monitor specific component
+tail -f logs/jira_integration.log
+
+# Search for errors
+grep -r "ERROR" logs/
+
+# Monitor during operation
 python run_pipeline.py
 ```
 
-**🔑 API Authentication Errors:**
-- Check credentials in `config.py`
-- Verify API token permissions
-- Scripts automatically fall back to mock/cached data
+For detailed logging documentation, see [LOGGING_GUIDE.md](LOGGING_GUIDE.md)
 
-**📦 Virtual Environment Issues:**
+## 📊 Data Flow
+
+### High-Level Data Flow
+```
+Jira API → Authentication → Project Fetch → Issues Fetch → 
+Data Transform → JSON Storage → Dashboard Display → Auto-Refresh Loop
+```
+
+### Detailed Process
+
+1. **Authentication Flow**
+   ```
+   config.py → jira_integration.py → Jira OAuth → API Access
+   ```
+
+2. **Data Collection Flow**
+   ```
+   API Request → JSON Response → Data Validation → 
+   Transform → Storage → Backup Creation
+   ```
+
+3. **Dashboard Flow**
+   ```
+   JSON Files → HTTP Server → Browser Request → 
+   Data Serve → JavaScript Render → Auto-Refresh
+   ```
+
+4. **Refresh Flow**
+   ```
+   Background Thread → Timer (5 min) → Jira Fetch → 
+   Data Update → Dashboard Refresh → Loop Continue
+   ```
+
+## 🔗 API Integration
+
+### Jira REST API Usage
+
+#### Authentication
+```python
+headers = {
+    'Authorization': f'Basic {base64_credentials}',
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+}
+```
+
+#### Project Endpoint
+```
+GET /rest/api/3/project/{projectId}
+```
+
+#### Issues Endpoint  
+```
+GET /rest/api/3/search?jql=project={projectId}&maxResults={limit}
+```
+
+### Data Transformation
+- **Issue Mapping**: Jira fields → Dashboard format
+- **Status Normalization**: Jira status → Standard categories
+- **Timestamp Handling**: UTC conversion and formatting
+- **Error Sanitization**: Safe data handling
+
+## � Production Deployment
+
+### Linux Server Setup
+
+#### 1. Environment Preparation
 ```bash
-# Recreate virtual environment
-rmdir /s .venv  # Windows
-rm -rf .venv    # Linux/Mac
-python -m venv .venv
-.venv\Scripts\pip install -r requirements.txt
+# Clone repository
+git clone <repository-url>
+cd jira-issues-fetch
+
+# Create virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
 ```
 
-**📊 No Data Available:**
+#### 2. Configuration
 ```bash
-# Force fresh data fetch
-python run_pipeline.py
-# (remove any --skip-* flags)
-```
+# Configure Jira credentials
+nano config.py
 
-**🌐 Dashboard Not Loading:**
-- Check if port 8080 is available
-- Verify virtual environment is activated
-- Check firewall/antivirus settings
-
-### **Debug Mode**
-
-For detailed troubleshooting:
-```bash
-# Enable verbose logging
-export LOG_LEVEL=DEBUG
-python run_pipeline.py
-```
-
----
-
-## 📊 API Integration
-
-### **Jira API**
-
-**Endpoints Used:**
-- `/rest/api/3/project/{projectId}` - Project information
-- `/rest/api/3/search` - Issue search and retrieval
-
-**Authentication:**
-- Email + API Token (Basic Auth)
-- API Token generation: Jira Settings → Security → API Tokens
-
-**Rate Limits:**
-- Handled automatically with retry logic
-- Graceful fallback to cached data
-
-### **DataDog API**
-
-**Endpoints Used:**
-- `/api/v1/query` - Metrics query
-- Various system metrics (CPU, memory, disk, network)
-
-**Authentication:**
-- API Key header: `DD-API-KEY`
-- API Key generation: DataDog → Integrations → APIs
-
-**Fallback Strategy:**
-- Automatic mock data generation
-- Realistic metric simulation
-- No service interruption
-
----
-
-## 🔄 Data Flow
-
-### **Pipeline Execution Flow**
-
-```mermaid
-graph TD
-    A[Start Pipeline] --> B[Check Prerequisites]
-    B --> C[Stop Existing Servers]
-    C --> D{Skip DataDog?}
-    D -->|No| E[Fetch DataDog Metrics]
-    D -->|Yes| F[Use Cached DataDog Data]
-    E --> G{Skip Jira?}
-    F --> G
-    G -->|No| H[Fetch Jira Issues]
-    G -->|Yes| I[Use Cached Jira Data]
-    H --> J[Validate Data]
-    I --> J
-    J --> K[Start Dashboard Server]
-    K --> L[Open Browser]
-    L --> M[Serve Dashboard]
-```
-
-### **Data Storage**
-
-**File System Mode:**
-```
-donation_platform_data/
-├── donation_issues.json      # Current Jira issues
-├── donation_project.json     # Project metadata
-└── backups/                  # Automatic backups
-    ├── issues_YYYYMMDD_HHMMSS.json
-    └── projects_YYYYMMDD_HHMMSS.json
-```
-
-**Database Mode:**
-```sql
--- Tables created automatically
-jira_projects (id, name, key_name, project_type, created_at, updated_at)
-jira_issues (id, key, summary, description, status, priority, ...)
-```
-
----
-
-## 📈 Monitoring
-
-### **Health Checks**
-
-The application includes built-in health monitoring:
-
-- **API Connectivity**: Automatic testing of Jira and DataDog APIs
-- **Data Freshness**: Validation of data timestamps
-- **Service Health**: Dashboard server status monitoring
-- **Port Availability**: Automatic port conflict resolution
-
-### **Logging**
-
-**Log Files:**
-- `jira_sync.log` - Jira integration logs
-- `donation_platform_sync.log` - Current sync logs
-
-**Log Levels:**
-- INFO: Normal operations
-- WARNING: Non-critical issues (API fallbacks)
-- ERROR: Critical issues requiring attention
-
-### **Metrics Collected**
-
-**From Jira:**
-- Total issues count
-- Issues by status (Open, In Progress, Done, etc.)
-- Recent activity
-- Project metadata
-
-**From DataDog:**
-- System CPU usage
-- Memory utilization
-- Disk usage
-- Network traffic (sent/received)
-
----
-
-## 🤝 Contributing
-
-### **Development Setup**
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Make your changes
-4. Test thoroughly
-5. Commit: `git commit -m 'Add amazing feature'`
-6. Push: `git push origin feature/amazing-feature`
-7. Open a Pull Request
-
-### **Code Standards**
-
-- Python 3.13+ compatibility
-- PEP 8 style guidelines
-- Comprehensive error handling
-- Documentation for new features
-- Test coverage for critical paths
-
-### **Testing**
-
-```bash
-# Run with mock data for testing
-python run_pipeline.py --skip-jira --skip-datadog
-
-# Test specific components
+# Test connection
 python jira_integration.py
-python datadog_integration.py
-python dashboard_server.py
 ```
+
+#### 3. Service Setup (systemd)
+Create `/etc/systemd/system/jira-monitor.service`:
+```ini
+[Unit]
+Description=Jira Live Monitoring System
+After=network.target
+
+[Service]
+Type=simple
+User=jira-monitor
+WorkingDirectory=/opt/jira-monitor
+Environment=PATH=/opt/jira-monitor/.venv/bin
+ExecStart=/opt/jira-monitor/.venv/bin/python run_pipeline.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+```
+
+#### 4. Start Service
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable jira-monitor
+sudo systemctl start jira-monitor
+```
+
+### Monitoring & Maintenance
+
+#### Real-time Monitoring
+```bash
+# Monitor all logs
+tail -f logs/*.log
+
+# Monitor system status
+sudo systemctl status jira-monitor
+
+# Monitor specific operations
+tail -f logs/jira_integration.log | grep ERROR
+```
+
+#### Log Rotation
+Automatic log rotation is built-in:
+- 10MB maximum file size
+- 5 backup files retained
+- Compressed archival
+
+#### Health Checks
+```bash
+# Check if dashboard is responding
+curl -f http://localhost:8080/
+
+# Check Jira connectivity
+python -c "from jira_integration import JiraClient; print(JiraClient().validate_connection())"
+
+# Check data freshness
+ls -la donation_platform_data/
+```
+
+### Performance Optimization
+- **CPU**: Minimal usage during refresh cycles
+- **Memory**: ~50-100MB typical usage
+- **Disk**: Log rotation prevents unlimited growth
+- **Network**: API calls every 5 minutes
+
+## �🛠️ Troubleshooting
+
+### Common Issues
+
+#### 1. Virtual Environment Not Found
+```bash
+# Error: Virtual environment not found
+# Solution:
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+#### 2. Jira Authentication Failed
+```bash
+# Error: 401 Unauthorized
+# Solution: Check config.py
+JIRA_EMAIL = "correct-email@example.com"
+JIRA_API_TOKEN = "valid-token-here"
+```
+
+#### 3. Port Already in Use
+```bash
+# Error: Port 8080 is already in use
+# Solution:
+python run_pipeline.py --stop  # Stop existing servers
+# Or use different port in dashboard_server.py
+```
+
+#### 4. No Data Displayed
+```bash
+# Check data files exist:
+ls donation_platform_data/
+# If missing, run:
+python jira_integration.py
+```
+
+### Debugging Steps
+
+1. **Test Jira Connection**
+   ```bash
+   python jira_integration.py
+   ```
+
+2. **Verify Configuration**
+   ```bash
+   python -c "import config; print(config.JIRA_BASE_URL)"
+   ```
+
+3. **Check Log Files**
+   ```bash
+   # Check all logs
+   tail -f logs/*.log
+   
+   # Check specific component logs
+   tail -f logs/jira_integration.log
+   tail -f logs/pipeline.log
+   ```
+
+4. **Manual Dashboard Test**
+   ```bash
+   python dashboard_server.py
+   ```
+
+### Log Analysis
+- **DEBUG**: Detailed tracing information for development
+- **INFO**: Normal operation messages and status updates
+- **WARNING**: Non-critical issues that don't stop execution
+- **ERROR**: Critical issues that may cause failures
+
+### Production Troubleshooting
+```bash
+# Monitor service status
+sudo systemctl status jira-monitor
+
+# View service logs
+sudo journalctl -u jira-monitor -f
+
+# Check application logs
+tail -f /opt/jira-monitor/logs/pipeline.log
+
+# Restart service if needed
+sudo systemctl restart jira-monitor
+```
+
+---
+
+## 📁 Additional Documentation
+
+- **[LOGGING_GUIDE.md](LOGGING_GUIDE.md)**: Comprehensive logging system documentation
+- **[EXECUTION_GUIDE.md](EXECUTION_GUIDE.md)**: Detailed execution instructions  
+- **[OPTIMIZATION_SUMMARY.md](OPTIMIZATION_SUMMARY.md)**: Performance and optimization details
+
+---
+
+**Built with ❤️ for efficient Jira monitoring and DataDog integration**
+- **SUCCESS**: Confirmation of successful operations
+
+## 📝 Development Notes
+
+### Code Reusability Principles
+- **Modular Functions**: Each function has single responsibility
+- **Configuration Driven**: Behavior controlled via `config.py`
+- **Error Handling**: Consistent error handling patterns
+- **Documentation**: Comprehensive inline documentation
+
+### Extension Points
+- **Storage Backends**: Add new storage options in `jira_integration.py`
+- **Dashboard Themes**: Modify `unified_dashboard.html`
+- **API Endpoints**: Add new endpoints in `dashboard_server.py`
+- **Data Sources**: Integrate additional APIs following Jira pattern
+
+### Performance Considerations
+- **API Rate Limiting**: Respects Jira API limits
+- **Memory Management**: Efficient data handling for large datasets
+- **Caching Strategy**: File-based caching with timestamp validation
+- **Background Processing**: Non-blocking auto-refresh operations
 
 ---
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/raditsama/JiraDataDog/issues)
-- **Documentation**: `EXECUTION_GUIDE.md`
-- **Email**: Contact repository owner
+For issues or questions:
+1. Check this README for common solutions
+2. Review log files for error details
+3. Test individual components in isolation
+4. Verify Jira API connectivity and credentials
 
 ---
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
-
-- **Jira API** for issue tracking integration
-- **DataDog API** for system metrics
-- **Python Community** for excellent libraries
-- **Contributors** who help improve this project
-
----
-
-## 🚀 Get Started Now!
-
-```bash
-git clone https://github.com/raditsama/JiraDataDog.git
-cd JiraDataDog/jira-issues-fetch
-python -m venv .venv
-.venv\Scripts\pip install -r requirements.txt
-python run_pipeline.py
-```
-
-**Visit http://localhost:8080 and start monitoring! 🎉**
-
----
-
-*Made with ❤️ for better monitoring and project management*
+**System Status**: Production Ready  
+**Last Updated**: August 13, 2025  
+**Version**: 1.0.0

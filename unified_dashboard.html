@@ -478,19 +478,34 @@
         // Load Jira data
         async function loadJiraData() {
             try {
-                const response = await fetch('donation_platform_data/donation_issues.json');
+                // Add cache-busting timestamp to ensure fresh data
+                const timestamp = new Date().getTime();
+                const response = await fetch(`donation_platform_data/donation_issues.json?t=${timestamp}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
                 jiraData = await response.json();
+                console.log('Jira data loaded successfully:', jiraData.total_issues, 'issues');
                 renderJiraData();
             } catch (error) {
                 console.error('Error loading Jira data:', error);
                 document.getElementById('issuesTableBody').innerHTML = 
-                    '<tr><td colspan="7" style="color: #e53e3e; text-align: center;">Failed to load Jira data</td></tr>';
+                    '<tr><td colspan="7" style="color: #e53e3e; text-align: center;">Failed to load Jira data: ' + error.message + '</td></tr>';
             }
         }
 
         // Render Jira data
         function renderJiraData() {
-            if (!jiraData || !jiraData.issues) return;
+            console.log('renderJiraData called, jiraData:', jiraData);
+            
+            if (!jiraData || !jiraData.issues) {
+                console.error('No Jira data or issues array found');
+                return;
+            }
+
+            console.log('Rendering', jiraData.issues.length, 'issues');
 
             // Update summary counts
             const statusCounts = {
@@ -503,11 +518,13 @@
 
             jiraData.issues.forEach(issue => {
                 const status = issue.status.toLowerCase();
-                if (status.includes('open')) statusCounts.open++;
+                if (status.includes('to do')) statusCounts.todo++;
                 else if (status.includes('progress')) statusCounts.progress++;
-                else if (status.includes('resolved') || status.includes('done') || status.includes('closed')) statusCounts.resolved++;
-                else if (status.includes('to do')) statusCounts.todo++;
+                else if (status.includes('review')) statusCounts.open++;  // In Review counts as "open"
+                else if (status.includes('done') || status.includes('closed') || status.includes('resolved')) statusCounts.resolved++;
             });
+
+            console.log('Status counts:', statusCounts);
 
             document.getElementById('totalIssues').textContent = statusCounts.total;
             document.getElementById('openIssues').textContent = statusCounts.open;

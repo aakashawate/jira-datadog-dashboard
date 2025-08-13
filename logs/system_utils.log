@@ -1,0 +1,25 @@
+2025-08-13 14:58:37 - system_utils - INFO - [utils.py:153] - Virtual environment check: Found at .venv\Scripts\python.exe
+2025-08-13 14:58:37 - system_utils - INFO - [utils.py:202] - Attempting to stop process on port 8080
+2025-08-13 14:58:37 - system_utils - INFO - [utils.py:235] - No process found or stopped on port 8080
+2025-08-13 14:58:37 - system_utils - INFO - [utils.py:171] - Running script: jira_integration.py with Python: .venv\Scripts\python.exe
+2025-08-13 14:58:39 - system_utils - INFO - [utils.py:181] - Script jira_integration.py completed with return code: 0
+2025-08-13 15:01:05 - system_utils - INFO - [utils.py:153] - Virtual environment check: Found at .venv\Scripts\python.exe
+2025-08-13 15:01:05 - system_utils - INFO - [utils.py:202] - Attempting to stop process on port 8080
+2025-08-13 15:01:05 - system_utils - INFO - [utils.py:235] - No process found or stopped on port 8080
+2025-08-13 15:01:05 - system_utils - INFO - [utils.py:171] - Running script: jira_integration.py with Python: .venv\Scripts\python.exe
+2025-08-13 15:01:07 - system_utils - INFO - [utils.py:181] - Script jira_integration.py completed with return code: 0
+2025-08-13 15:01:59 - system_utils - INFO - [utils.py:153] - Virtual environment check: Found at .venv\Scripts\python.exe
+2025-08-13 15:01:59 - system_utils - INFO - [utils.py:202] - Attempting to stop process on port 8080
+2025-08-13 15:01:59 - system_utils - INFO - [utils.py:235] - No process found or stopped on port 8080
+2025-08-13 15:01:59 - system_utils - INFO - [utils.py:171] - Running script: jira_integration.py with Python: .venv\Scripts\python.exe
+2025-08-13 15:02:01 - system_utils - INFO - [utils.py:181] - Script jira_integration.py completed with return code: 0
+2025-08-13 15:04:37 - system_utils - INFO - [utils.py:153] - Virtual environment check: Found at .venv\Scripts\python.exe
+2025-08-13 15:04:37 - system_utils - INFO - [utils.py:202] - Attempting to stop process on port 8080
+2025-08-13 15:04:37 - system_utils - INFO - [utils.py:214] - Successfully stopped process PID 2544 on port 8080
+2025-08-13 15:04:40 - system_utils - INFO - [utils.py:171] - Running script: jira_integration.py with Python: .venv\Scripts\python.exe
+2025-08-13 15:04:42 - system_utils - INFO - [utils.py:181] - Script jira_integration.py completed with return code: 0
+2025-08-13 15:07:44 - system_utils - INFO - [utils.py:153] - Virtual environment check: Found at .venv\Scripts\python.exe
+2025-08-13 15:07:44 - system_utils - INFO - [utils.py:202] - Attempting to stop process on port 8080
+2025-08-13 15:07:44 - system_utils - INFO - [utils.py:235] - No process found or stopped on port 8080
+2025-08-13 15:07:44 - system_utils - INFO - [utils.py:171] - Running script: jira_integration.py with Python: .venv\Scripts\python.exe
+2025-08-13 15:07:46 - system_utils - INFO - [utils.py:181] - Script jira_integration.py completed with return code: 0

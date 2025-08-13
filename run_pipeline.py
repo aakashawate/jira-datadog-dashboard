@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """
-Jira-DataDog Live Monitoring System
+Jira-DataDog Live Monitoring System with Comprehensive Logging
 Single unified application that always fetches live data
 
 This application:
 - Always fetches live Jira data (no cached data mode)
-- Auto-refreshes every 5 minutes for new issues
+- Auto-refreshes every 5 minutes for real-time updates
 - Continuously monitors and updates the dashboard
 - Single command execution - no separate scripts needed
+- Comprehensive logging for production deployment
 
 Usage:
     python run_pipeline.py                    # Start live monitoring system
@@ -26,63 +27,60 @@ import atexit
 from pathlib import Path
 from datetime import datetime
 
+# Import shared utilities
+from utils import MessageUtils, SystemUtils, FileUtils, ConfigManager, Logger
+
+# Initialize logger for this module
+logger = Logger.get_logger('pipeline')
+
 # Global variables for monitoring
 dashboard_process = None
 monitoring_active = False
 monitoring_thread = None
 
-import os
-import sys
-import subprocess
-import time
-import argparse
-import json
-from pathlib import Path
-from datetime import datetime
-
 def print_header(title):
     """Print a formatted header"""
-    print("\n" + "="*60)
-    print(f" {title}")
-    print("="*60 + "\n")
+    MessageUtils.print_header(title)
 
 def print_step(message):
     """Print a step message"""
-    print(f"🔄 {message}")
+    MessageUtils.print_step(message)
 
 def print_success(message):
     """Print a success message"""
-    print(f"✅ {message}")
+    MessageUtils.print_success(message)
 
 def print_warning(message):
     """Print a warning message"""
-    print(f"⚠️  {message}")
+    MessageUtils.print_warning(message)
 
 def print_error(message):
     """Print an error message"""
-    print(f"❌ {message}")
+    MessageUtils.print_error(message)
 
 def print_info(message):
     """Print an info message"""
-    print(f"💡 {message}")
+    MessageUtils.print_info(message)
 
 def show_banner():
-    """Show the application banner"""
+    """Show the application banner with logging"""
+    logger.info("Displaying application banner")
     banner = """
-    ╔══════════════════════════════════════════════════════════╗
-    ║                                                          ║
-    ║            🚀 JIRA LIVE MONITORING SYSTEM               ║
-    ║                                                          ║
-    ║          📊 Real-time Issue Tracking Dashboard          ║
-    ║                                                          ║
-    ╚══════════════════════════════════════════════════════════╝
+    ==============================================================
+                                                               
+                JIRA LIVE MONITORING SYSTEM                   
+                                                               
+             Real-time Issue Tracking Dashboard               
+                                                               
+    ==============================================================
     """
     print(banner)
 
 def check_venv():
-    """Check if virtual environment exists"""
-    venv_python = Path(".venv/Scripts/python.exe")
-    if not venv_python.exists():
+    """Check if virtual environment exists with logging"""
+    logger.info("Checking virtual environment setup")
+    if not SystemUtils.check_virtual_environment():
+        logger.warning("Virtual environment not found")
         print_error("Virtual environment not found!")
         print_info("Please run: python -m venv .venv")
         print_info("Then run: .venv\\Scripts\\pip install -r requirements.txt")
@@ -90,39 +88,43 @@ def check_venv():
     return True
 
 def run_python_script(script_name, description):
-    """Run a Python script in the virtual environment"""
+    """Run a Python script in the virtual environment with logging"""
+    logger.info(f"Running script: {script_name} ({description})")
     print_step(f"Running {description}...")
     
     try:
-        result = subprocess.run([
-            ".venv/Scripts/python.exe", script_name
-        ], capture_output=False, text=True)
+        result = SystemUtils.run_script_in_venv(script_name, capture_output=False)
         
         if result.returncode == 0:
             print_success(f"{description} completed successfully")
+            logger.info(f"Script {script_name} completed successfully")
             return True
         else:
             print_warning(f"{description} completed with warnings (Exit code: {result.returncode})")
+            logger.warning(f"Script {script_name} completed with exit code: {result.returncode}")
             return False
     except Exception as e:
         print_error(f"Failed to run {description}: {e}")
+        logger.error(f"Failed to run script {script_name}: {str(e)}", exc_info=True)
         return False
 
 def check_data_files():
-    """Check if Jira data files exist and get their info"""
+    """Check if Jira data files exist and get their info with logging"""
+    logger.info("Checking existing data files")
     jira_file = Path("donation_platform_data/donation_issues.json")
     
     has_jira = jira_file.exists()
     
     if has_jira:
         try:
-            with open(jira_file, 'r', encoding='utf-8') as f:
-                jira_data = json.load(f)
-                issue_count = len(jira_data.get('issues', []))
-                last_updated = jira_data.get('last_updated', 'Unknown')
-                print_success(f"Jira data found: {issue_count} issues (Updated: {last_updated})")
+            jira_data = FileUtils.read_json_file(jira_file)
+            issue_count = len(jira_data.get('issues', []))
+            last_updated = jira_data.get('last_updated', 'Unknown')
+            print_success(f"Jira data found: {issue_count} issues (Updated: {last_updated})")
+            logger.info(f"Found Jira data: {issue_count} issues, last updated: {last_updated}")
         except Exception as e:
             print_warning(f"Jira file exists but couldn't read: {e}")
+            logger.warning(f"Could not read Jira data file: {str(e)}")
     else:
         print_warning("No Jira data found")
     
@@ -130,27 +132,16 @@ def check_data_files():
 
 def stop_existing_dashboard():
     """Stop any existing dashboard servers on port 8080"""
-    stopped = False
-    try:
-        if os.name == 'nt':  # Windows
-            result = subprocess.run(['netstat', '-ano'], capture_output=True, text=True)
-            for line in result.stdout.split('\n'):
-                if ':8080' in line and 'LISTENING' in line:
-                    parts = line.split()
-                    if len(parts) >= 5:
-                        pid = parts[-1]
-                        try:
-                            subprocess.run(['taskkill', '/F', '/PID', pid], capture_output=True, check=True)
-                            print_step(f"Stopped existing dashboard server (PID: {pid})")
-                            stopped = True
-                            time.sleep(1)
-                        except subprocess.CalledProcessError:
-                            pass
-    except Exception:
-        pass
+    stopped = SystemUtils.stop_process_on_port(8080)
+    if stopped:
+        print_step("Stopped existing dashboard server")
+        time.sleep(1)
     return stopped
 
 def main():
+    """Main application entry point with comprehensive logging"""
+    logger.info("=== STARTING MAIN APPLICATION ===")
+    
     parser = argparse.ArgumentParser(
         description="Jira Live Monitoring System - Real-time Issue Tracking Dashboard",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -172,14 +163,18 @@ Auto-refreshes Jira data every 5 minutes for new issues
                        help="Stop any running dashboard servers and exit")
     
     args = parser.parse_args()
+    logger.info(f"Command line arguments: {args}")
     
     # Handle stop command
     if args.stop:
-        print("🛑 Stopping dashboard servers...")
+        logger.info("Stop command requested")
+        print("Stopping dashboard servers...")
         if stop_existing_dashboard():
             print_success("Dashboard servers stopped successfully")
+            logger.info("Dashboard servers stopped successfully")
         else:
             print_info("No running dashboard servers found")
+            logger.info("No running dashboard servers found")
         return
     
     # Show banner
@@ -188,34 +183,37 @@ Auto-refreshes Jira data every 5 minutes for new issues
     # Handle aliases
     if args.dashboard_only:
         args.quick_start = True
+        logger.info("Dashboard-only mode enabled")
     
     # Check prerequisites
+    logger.info("Starting prerequisite checks")
     print_step("Checking prerequisites...")
     if not check_venv():
+        logger.error("Virtual environment check failed")
         sys.exit(1)
     print_success("Virtual environment found")
+    logger.info("Virtual environment check passed")
     
-    # Change to script directory
-    os.chdir(Path(__file__).parent)
-    print_success(f"Working directory: {os.getcwd()}")
+    # Show current working directory
+    cwd = os.getcwd()
+    print_success(f"Working directory: {cwd}")
+    logger.info(f"Working directory: {cwd}")
     
     # Stop any existing dashboard servers
-    stop_existing_dashboard()
+    logger.info("Stopping any existing dashboard servers")
+    if stop_existing_dashboard():
+        logger.info("Existing dashboard server stopped")
+        time.sleep(2)
     
     # Check existing data
+    logger.info("Checking existing data files")
     print_step("Checking existing data files...")
-    has_jira = check_data_files()
+    check_data_files()
     
-    if args.quick_start:
-        print_header("⚡ QUICK START MODE - USING EXISTING JIRA DATA")
-        if not has_jira:
-            print_error("No existing Jira data found! Cannot use quick-start mode.")
-            print_info("Run without --quick-start to fetch fresh Jira data")
-            print_info("Example: python run_pipeline.py")
-            sys.exit(1)
-    else:
+    # Step 1: Data fetch (unless quick-start)
+    if not args.quick_start:
         # Step 1: Jira Data (ALWAYS LIVE FETCH - NO CACHED DATA)
-        print_header("🎫 STEP 1: FETCHING LIVE JIRA DATA")
+        print_header("STEP 1: FETCHING LIVE JIRA DATA")
         print_info("Always fetching fresh data from Jira API (no cached data)")
         success = run_python_script("jira_integration.py", "Live Jira data fetch")
         if success:
@@ -233,14 +231,15 @@ Auto-refreshes Jira data every 5 minutes for new issues
         print_info("Failed to fetch fresh Jira data from API")
         sys.exit(1)
     
-    # Step 2: Dashboard with Live Auto-Refresh
-    print_header("🌐 STEP 2: STARTING LIVE DASHBOARD SERVER")
-    print("🌐 Dashboard URL: http://localhost:8080")
-    print("🔄 Live Auto-refresh: Every 5 minutes for NEW Jira issues")
-    print("📊 DataDog Dashboard: Available on DataDog port (no metrics fetching)")
-    print("🛑 Stop server: Press Ctrl+C")
+    # Step 2: Live Dashboard with Fast Auto-Refresh
+    logger.info("Starting dashboard server")
+    print_header("STEP 2: STARTING LIVE DASHBOARD SERVER")
+    print("Dashboard URL: http://localhost:8080")
+    print("Live Auto-refresh: Every 5 minutes for NEW Jira issues")
+    print("DataDog Dashboard: Available on DataDog port (no metrics fetching)")
+    print("Stop server: Press Ctrl+C")
     print("\n" + "="*50)
-    print("🚀 Starting dashboard server...")
+    print("Starting dashboard server...")
     print("="*50)
     
     time.sleep(2)
@@ -248,17 +247,22 @@ Auto-refreshes Jira data every 5 minutes for new issues
     try:
         # Use the virtual environment Python
         venv_python = Path(".venv/Scripts/python.exe")
+        logger.info(f"Starting dashboard server with Python: {venv_python}")
         subprocess.run([str(venv_python), "dashboard_server.py"])
     except KeyboardInterrupt:
-        print("\n\n🛑 Dashboard server stopped by user")
+        logger.info("Dashboard server stopped by user (KeyboardInterrupt)")
+        print("\n\nDashboard server stopped by user")
         print_success("Pipeline execution completed gracefully")
     except Exception as e:
+        logger.error(f"Error running dashboard server: {str(e)}", exc_info=True)
         print_error(f"Failed to start dashboard server: {e}")
         print_info("Check if port 8080 is available or try running with --stop first")
         sys.exit(1)
     
-    print_header("🏁 PIPELINE EXECUTION COMPLETED")
-    print_success("Thank you for using the Jira-DataDog Monitoring Pipeline! 🚀")
+    print_header("PIPELINE EXECUTION COMPLETED")
+    print_success("Thank you for using the Jira-DataDog Monitoring Pipeline!")
+    logger.info("=== PIPELINE EXECUTION COMPLETED ===")
 
 if __name__ == "__main__":
+    logger.info("Starting run_pipeline.py as main module")
     main()

@@ -1,0 +1,92 @@
+2025-08-13 14:58:37 - pipeline - INFO - [run_pipeline.py:267] - Starting run_pipeline.py as main module
+2025-08-13 14:58:37 - pipeline - INFO - [run_pipeline.py:143] - === STARTING MAIN APPLICATION ===
+2025-08-13 14:58:37 - pipeline - INFO - [run_pipeline.py:166] - Command line arguments: Namespace(quick_start=False, dashboard_only=False, stop=False)
+2025-08-13 14:58:37 - pipeline - INFO - [run_pipeline.py:67] - Displaying application banner
+2025-08-13 14:58:37 - pipeline - INFO - [run_pipeline.py:189] - Starting prerequisite checks
+2025-08-13 14:58:37 - pipeline - INFO - [run_pipeline.py:81] - Checking virtual environment setup
+2025-08-13 14:58:37 - pipeline - INFO - [run_pipeline.py:195] - Virtual environment check passed
+2025-08-13 14:58:37 - pipeline - INFO - [run_pipeline.py:200] - Working directory: C:\Users\Aakash\Desktop\work\JiraDatadog\jira-issues-fetch
+2025-08-13 14:58:37 - pipeline - INFO - [run_pipeline.py:203] - Stopping any existing dashboard servers
+2025-08-13 14:58:37 - pipeline - INFO - [run_pipeline.py:209] - Checking existing data files
+2025-08-13 14:58:37 - pipeline - INFO - [run_pipeline.py:113] - Checking existing data files
+2025-08-13 14:58:37 - pipeline - INFO - [run_pipeline.py:124] - Found Jira data: 19 issues, last updated: 2025-08-13T14:55:43.419698
+2025-08-13 14:58:37 - pipeline - INFO - [run_pipeline.py:92] - Running script: jira_integration.py (Live Jira data fetch)
+2025-08-13 14:58:39 - pipeline - INFO - [run_pipeline.py:100] - Script jira_integration.py completed successfully
+2025-08-13 14:58:39 - pipeline - INFO - [run_pipeline.py:113] - Checking existing data files
+2025-08-13 14:58:39 - pipeline - INFO - [run_pipeline.py:124] - Found Jira data: 19 issues, last updated: 2025-08-13T14:58:39.883237
+2025-08-13 14:58:39 - pipeline - INFO - [run_pipeline.py:235] - Starting dashboard server
+2025-08-13 14:58:41 - pipeline - INFO - [run_pipeline.py:250] - Starting dashboard server with Python: .venv\Scripts\python.exe
+2025-08-13 15:01:05 - pipeline - INFO - [run_pipeline.py:267] - Starting run_pipeline.py as main module
+2025-08-13 15:01:05 - pipeline - INFO - [run_pipeline.py:143] - === STARTING MAIN APPLICATION ===
+2025-08-13 15:01:05 - pipeline - INFO - [run_pipeline.py:166] - Command line arguments: Namespace(quick_start=False, dashboard_only=False, stop=False)
+2025-08-13 15:01:05 - pipeline - INFO - [run_pipeline.py:67] - Displaying application banner
+2025-08-13 15:01:05 - pipeline - INFO - [run_pipeline.py:189] - Starting prerequisite checks
+2025-08-13 15:01:05 - pipeline - INFO - [run_pipeline.py:81] - Checking virtual environment setup
+2025-08-13 15:01:05 - pipeline - INFO - [run_pipeline.py:195] - Virtual environment check passed
+2025-08-13 15:01:05 - pipeline - INFO - [run_pipeline.py:200] - Working directory: C:\Users\Aakash\Desktop\work\JiraDatadog\jira-issues-fetch
+2025-08-13 15:01:05 - pipeline - INFO - [run_pipeline.py:203] - Stopping any existing dashboard servers
+2025-08-13 15:01:05 - pipeline - INFO - [run_pipeline.py:209] - Checking existing data files
+2025-08-13 15:01:05 - pipeline - INFO - [run_pipeline.py:113] - Checking existing data files
+2025-08-13 15:01:05 - pipeline - INFO - [run_pipeline.py:124] - Found Jira data: 19 issues, last updated: 2025-08-13T14:58:39.883237
+2025-08-13 15:01:05 - pipeline - INFO - [run_pipeline.py:92] - Running script: jira_integration.py (Live Jira data fetch)
+2025-08-13 15:01:07 - pipeline - INFO - [run_pipeline.py:100] - Script jira_integration.py completed successfully
+2025-08-13 15:01:07 - pipeline - INFO - [run_pipeline.py:113] - Checking existing data files
+2025-08-13 15:01:07 - pipeline - INFO - [run_pipeline.py:124] - Found Jira data: 19 issues, last updated: 2025-08-13T15:01:07.127422
+2025-08-13 15:01:07 - pipeline - INFO - [run_pipeline.py:235] - Starting dashboard server
+2025-08-13 15:01:09 - pipeline - INFO - [run_pipeline.py:250] - Starting dashboard server with Python: .venv\Scripts\python.exe
+2025-08-13 15:01:59 - pipeline - INFO - [run_pipeline.py:267] - Starting run_pipeline.py as main module
+2025-08-13 15:01:59 - pipeline - INFO - [run_pipeline.py:143] - === STARTING MAIN APPLICATION ===
+2025-08-13 15:01:59 - pipeline - INFO - [run_pipeline.py:166] - Command line arguments: Namespace(quick_start=False, dashboard_only=False, stop=False)
+2025-08-13 15:01:59 - pipeline - INFO - [run_pipeline.py:67] - Displaying application banner
+2025-08-13 15:01:59 - pipeline - INFO - [run_pipeline.py:189] - Starting prerequisite checks
+2025-08-13 15:01:59 - pipeline - INFO - [run_pipeline.py:81] - Checking virtual environment setup
+2025-08-13 15:01:59 - pipeline - INFO - [run_pipeline.py:195] - Virtual environment check passed
+2025-08-13 15:01:59 - pipeline - INFO - [run_pipeline.py:200] - Working directory: C:\Users\Aakash\Desktop\work\JiraDatadog\jira-issues-fetch
+2025-08-13 15:01:59 - pipeline - INFO - [run_pipeline.py:203] - Stopping any existing dashboard servers
+2025-08-13 15:01:59 - pipeline - INFO - [run_pipeline.py:209] - Checking existing data files
+2025-08-13 15:01:59 - pipeline - INFO - [run_pipeline.py:113] - Checking existing data files
+2025-08-13 15:01:59 - pipeline - INFO - [run_pipeline.py:124] - Found Jira data: 19 issues, last updated: 2025-08-13T15:01:07.127422
+2025-08-13 15:01:59 - pipeline - INFO - [run_pipeline.py:92] - Running script: jira_integration.py (Live Jira data fetch)
+2025-08-13 15:02:01 - pipeline - INFO - [run_pipeline.py:100] - Script jira_integration.py completed successfully
+2025-08-13 15:02:01 - pipeline - INFO - [run_pipeline.py:113] - Checking existing data files
+2025-08-13 15:02:01 - pipeline - INFO - [run_pipeline.py:124] - Found Jira data: 19 issues, last updated: 2025-08-13T15:02:01.239844
+2025-08-13 15:02:01 - pipeline - INFO - [run_pipeline.py:235] - Starting dashboard server
+2025-08-13 15:02:03 - pipeline - INFO - [run_pipeline.py:250] - Starting dashboard server with Python: .venv\Scripts\python.exe
+2025-08-13 15:04:37 - pipeline - INFO - [run_pipeline.py:267] - Starting run_pipeline.py as main module
+2025-08-13 15:04:37 - pipeline - INFO - [run_pipeline.py:143] - === STARTING MAIN APPLICATION ===
+2025-08-13 15:04:37 - pipeline - INFO - [run_pipeline.py:166] - Command line arguments: Namespace(quick_start=False, dashboard_only=False, stop=False)
+2025-08-13 15:04:37 - pipeline - INFO - [run_pipeline.py:67] - Displaying application banner
+2025-08-13 15:04:37 - pipeline - INFO - [run_pipeline.py:189] - Starting prerequisite checks
+2025-08-13 15:04:37 - pipeline - INFO - [run_pipeline.py:81] - Checking virtual environment setup
+2025-08-13 15:04:37 - pipeline - INFO - [run_pipeline.py:195] - Virtual environment check passed
+2025-08-13 15:04:37 - pipeline - INFO - [run_pipeline.py:200] - Working directory: C:\Users\Aakash\Desktop\work\JiraDatadog\jira-issues-fetch
+2025-08-13 15:04:37 - pipeline - INFO - [run_pipeline.py:203] - Stopping any existing dashboard servers
+2025-08-13 15:04:37 - pipeline - INFO - [run_pipeline.py:264] - === PIPELINE EXECUTION COMPLETED ===
+2025-08-13 15:04:38 - pipeline - INFO - [run_pipeline.py:205] - Existing dashboard server stopped
+2025-08-13 15:04:40 - pipeline - INFO - [run_pipeline.py:209] - Checking existing data files
+2025-08-13 15:04:40 - pipeline - INFO - [run_pipeline.py:113] - Checking existing data files
+2025-08-13 15:04:40 - pipeline - INFO - [run_pipeline.py:124] - Found Jira data: 19 issues, last updated: 2025-08-13T15:02:01.239844
+2025-08-13 15:04:40 - pipeline - INFO - [run_pipeline.py:92] - Running script: jira_integration.py (Live Jira data fetch)
+2025-08-13 15:04:42 - pipeline - INFO - [run_pipeline.py:100] - Script jira_integration.py completed successfully
+2025-08-13 15:04:42 - pipeline - INFO - [run_pipeline.py:113] - Checking existing data files
+2025-08-13 15:04:42 - pipeline - INFO - [run_pipeline.py:124] - Found Jira data: 19 issues, last updated: 2025-08-13T15:04:42.594091
+2025-08-13 15:04:42 - pipeline - INFO - [run_pipeline.py:235] - Starting dashboard server
+2025-08-13 15:04:44 - pipeline - INFO - [run_pipeline.py:250] - Starting dashboard server with Python: .venv\Scripts\python.exe
+2025-08-13 15:07:44 - pipeline - INFO - [run_pipeline.py:267] - Starting run_pipeline.py as main module
+2025-08-13 15:07:44 - pipeline - INFO - [run_pipeline.py:143] - === STARTING MAIN APPLICATION ===
+2025-08-13 15:07:44 - pipeline - INFO - [run_pipeline.py:166] - Command line arguments: Namespace(quick_start=False, dashboard_only=False, stop=False)
+2025-08-13 15:07:44 - pipeline - INFO - [run_pipeline.py:67] - Displaying application banner
+2025-08-13 15:07:44 - pipeline - INFO - [run_pipeline.py:189] - Starting prerequisite checks
+2025-08-13 15:07:44 - pipeline - INFO - [run_pipeline.py:81] - Checking virtual environment setup
+2025-08-13 15:07:44 - pipeline - INFO - [run_pipeline.py:195] - Virtual environment check passed
+2025-08-13 15:07:44 - pipeline - INFO - [run_pipeline.py:200] - Working directory: C:\Users\Aakash\Desktop\work\JiraDatadog\jira-issues-fetch
+2025-08-13 15:07:44 - pipeline - INFO - [run_pipeline.py:203] - Stopping any existing dashboard servers
+2025-08-13 15:07:44 - pipeline - INFO - [run_pipeline.py:209] - Checking existing data files
+2025-08-13 15:07:44 - pipeline - INFO - [run_pipeline.py:113] - Checking existing data files
+2025-08-13 15:07:44 - pipeline - INFO - [run_pipeline.py:124] - Found Jira data: 19 issues, last updated: 2025-08-13T15:04:42.594091
+2025-08-13 15:07:44 - pipeline - INFO - [run_pipeline.py:92] - Running script: jira_integration.py (Live Jira data fetch)
+2025-08-13 15:07:46 - pipeline - INFO - [run_pipeline.py:100] - Script jira_integration.py completed successfully
+2025-08-13 15:07:46 - pipeline - INFO - [run_pipeline.py:113] - Checking existing data files
+2025-08-13 15:07:46 - pipeline - INFO - [run_pipeline.py:124] - Found Jira data: 19 issues, last updated: 2025-08-13T15:07:46.761923
+2025-08-13 15:07:46 - pipeline - INFO - [run_pipeline.py:235] - Starting dashboard server
+2025-08-13 15:07:48 - pipeline - INFO - [run_pipeline.py:250] - Starting dashboard server with Python: .venv\Scripts\python.exe

@@ -14,7 +14,7 @@ import os
 # Your Jira instance details
 JIRA_BASE_URL = "https://tseljira.atlassian.net"
 JIRA_EMAIL = "saiakki37@gmail.com"
-JIRA_API_TOKEN = "ATATT3xFfGF0AoV4HQmCtDlBh-GQnoS_DOLLXVttHaE_tF_ILhMOdrybRA64O4zdztG_iuHXIORU9aGDQHFP5Fh47CJ4mYR3r2uvGSISCNJzQAOnGtT1xNa83Le5mCSaAxmUD_NnbSVi6PI0z32i2EbAhPsHx3SA4W3mSapx36CqkXYTKIJaxb8=67AA7CBC"
+JIRA_API_TOKEN = "ATATT3xFfGF0H6U9nuqgErIuuCWa55g-eURCDSkumpPdIWARfvKvAR0g6I_CvaeyAZ3Ik4lc05oPI3NMwjGuyW_6RHzq5QCGfNBHOTwZSKlttq9rPj_rlqlFlRshfNANdUu98_vpAfZozz61W-XinA9hcjzRZybJqujjhuCoq6HAFojIsxypc-k=46115677"
 
 # Project settings
 JIRA_PROJECT_ID = "10000"  # Numeric project ID for Donation Platform
