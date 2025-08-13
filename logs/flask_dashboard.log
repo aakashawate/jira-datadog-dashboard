@@ -1,0 +1,18 @@
+2025-08-13 20:04:10 - flask_dashboard - INFO - [flask_app.py:329] - Starting Flask dashboard server on 127.0.0.1:8080
+2025-08-13 20:04:12 - flask_dashboard - INFO - [flask_app.py:334] - Opening dashboard in browser...
+2025-08-13 20:04:34 - flask_dashboard - INFO - [flask_app.py:91] - User admin logged in successfully
+2025-08-13 20:14:40 - flask_dashboard - INFO - [flask_app.py:337] - Starting Flask dashboard server on 127.0.0.1:8080
+2025-08-13 20:14:42 - flask_dashboard - INFO - [flask_app.py:342] - Opening dashboard in browser...
+2025-08-13 20:15:12 - flask_dashboard - INFO - [flask_app.py:100] - User jiradd logged in successfully
+2025-08-13 20:21:40 - flask_dashboard - INFO - [flask_app.py:100] - User jiradd logged in successfully
+2025-08-13 20:22:54 - flask_dashboard - INFO - [flask_app.py:100] - User jiradd logged in successfully
+2025-08-13 20:28:56 - flask_dashboard - INFO - [flask_app.py:357] - Starting Flask dashboard server on 127.0.0.1:8080
+2025-08-13 20:28:58 - flask_dashboard - INFO - [flask_app.py:362] - Opening dashboard in browser...
+2025-08-13 20:29:10 - flask_dashboard - INFO - [flask_app.py:104] - User jiradd logged in successfully
+2025-08-13 20:29:18 - flask_dashboard - INFO - [flask_app.py:117] - User jiradd logged out
+2025-08-13 20:29:21 - flask_dashboard - INFO - [flask_app.py:104] - User jiradd logged in successfully
+2025-08-13 20:29:24 - flask_dashboard - INFO - [flask_app.py:117] - User jiradd logged out
+2025-08-13 20:56:42 - flask_dashboard - INFO - [flask_app.py:357] - Starting Flask dashboard server on 127.0.0.1:8080
+2025-08-13 20:56:44 - flask_dashboard - INFO - [flask_app.py:362] - Opening dashboard in browser...
+2025-08-13 20:57:06 - flask_dashboard - INFO - [flask_app.py:104] - User jiradd logged in successfully
+2025-08-13 20:57:14 - flask_dashboard - INFO - [flask_app.py:117] - User jiradd logged out

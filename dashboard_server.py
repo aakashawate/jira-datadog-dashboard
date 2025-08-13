@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Live Dashboard Server for Jira Monitoring System with Comprehensive Logging
+Live Dashboard Server for Jira Monitoring System
 Serves the HTML dashboard with live auto-refresh of Jira data every 5 minutes
 """
 
@@ -16,10 +16,6 @@ import threading
 import time
 from datetime import datetime
 from pathlib import Path
-from utils import Logger
-
-# Initialize logger for this module
-logger = Logger.get_logger('dashboard_server')
 
 # Global variable to track the auto-refresh thread
 refresh_thread = None
@@ -37,13 +33,9 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
         # Parse the request path
         parsed_path = urlparse(self.path)
         
-        # Log request
-        logger.debug(f"Handling GET request for: {self.path}")
-        
         # Default to serving the dashboard
         if self.path == '/' or self.path == '':
             self.path = '/unified_dashboard.html'
-            logger.debug("Redirecting to unified_dashboard.html")
         
         # Handle JSON data requests with proper content type
         if self.path.endswith('.json'):
@@ -52,7 +44,6 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
                 with open(self.path[1:], 'r', encoding='utf-8') as f:
                     content = f.read()
                 
-                logger.debug(f"Serving JSON file: {self.path[1:]}")
                 self.send_response(200)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
@@ -112,26 +103,26 @@ def start_dashboard_server(port=8080):
     """Start the dashboard server with live auto-refresh"""
     global refresh_thread, stop_refresh
     
-    print(f"Starting Live Jira Monitoring Dashboard Server...")
-    print(f"Serving from: {os.getcwd()}")
+    print(f"🚀 Starting Live Jira Monitoring Dashboard Server...")
+    print(f"📁 Serving from: {os.getcwd()}")
     
     with socketserver.TCPServer(("", port), DashboardHandler) as httpd:
         dashboard_url = f"http://localhost:{port}"
-        print(f"Dashboard available at: {dashboard_url}")
-        print(f"Jira data loaded from: donation_platform_data/donation_issues.json")
-        print(f"Live auto-refresh: Fetching new Jira issues every 5 minutes")
-        print(f"Press Ctrl+C to stop the server")
+        print(f"🌐 Dashboard available at: {dashboard_url}")
+        print(f"📊 Jira data loaded from: donation_platform_data/donation_issues.json")
+        print(f"🔄 Live auto-refresh: Fetching new Jira issues every 5 minutes")
+        print(f"💡 Press Ctrl+C to stop the server")
         
         # Start auto-refresh thread
         stop_refresh = False
         refresh_thread = threading.Thread(target=auto_refresh_jira, daemon=True)
         refresh_thread.start()
-        print(f"Auto-refresh thread started")
+        print(f"✅ Auto-refresh thread started")
         
         # Auto-open browser after a short delay
         def open_browser():
             time.sleep(2)
-            print(f"Opening dashboard in browser...")
+            print(f"🔗 Opening dashboard in browser...")
             webbrowser.open(dashboard_url)
         
         browser_thread = threading.Thread(target=open_browser)
@@ -141,7 +132,7 @@ def start_dashboard_server(port=8080):
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:
-            print(f"\nShutting down dashboard server...")
+            print(f"\n🛑 Shutting down dashboard server...")
             stop_refresh = True
             httpd.shutdown()
 
@@ -150,11 +141,11 @@ def check_data_files():
     issues_file = "donation_platform_data/donation_issues.json"
     project_file = "donation_platform_data/donation_project.json"
     
-    print("Checking data files...")
+    print("🔍 Checking data files...")
     
     if not os.path.exists(issues_file):
-        print(f"ERROR: Jira issues data not found: {issues_file}")
-        print(f"INFO: Run 'python jira_integration.py' first to fetch Jira data")
+        print(f"❌ Jira issues data not found: {issues_file}")
+        print(f"💡 Run 'python jira_integration.py' first to fetch Jira data")
         return False
     
     if not os.path.exists(project_file):
@@ -169,32 +160,32 @@ def check_data_files():
         last_updated = data.get('last_updated', 'Unknown')
         total_issues = data.get('total_issues', 0)
         
-        print(f"SUCCESS: Found Jira data:")
-        print(f"   Total Issues: {total_issues}")
-        print(f"   Last Updated: {last_updated}")
-        print(f"   File: {issues_file}")
+        print(f"✅ Found Jira data:")
+        print(f"   📊 Total Issues: {total_issues}")
+        print(f"   🕐 Last Updated: {last_updated}")
+        print(f"   📁 File: {issues_file}")
         
         return True
         
     except Exception as e:
-        print(f"ERROR: Error reading Jira data: {e}")
+        print(f"❌ Error reading Jira data: {e}")
         return False
 
 def main():
     """Main function"""
     print("=" * 60)
-    print("JIRA LIVE MONITORING DASHBOARD")
+    print("🎯 JIRA LIVE MONITORING DASHBOARD")
     print("=" * 60)
     
     # Check if we're in the right directory
     if not os.path.exists("unified_dashboard.html"):
-        print("ERROR: Dashboard file not found in current directory")
-        print("INFO: Make sure you're in the jira-issues-fetch directory")
+        print("❌ Dashboard file not found in current directory")
+        print("💡 Make sure you're in the jira-issues-fetch directory")
         return
     
     # Check data files
     if not check_data_files():
-        print("\nAttempting to fetch fresh Jira data...")
+        print("\n🔄 Attempting to fetch fresh Jira data...")
         try:
             # Use virtual environment Python if available
             venv_python = Path(".venv/Scripts/python.exe")
@@ -202,12 +193,12 @@ def main():
                 subprocess.run([str(venv_python), "jira_integration.py"], check=True)
             else:
                 subprocess.run([sys.executable, "jira_integration.py"], check=True)
-            print("SUCCESS: Jira data updated")
+            print("✅ Jira data updated")
         except subprocess.CalledProcessError as e:
-            print(f"ERROR: Failed to update Jira data: {e}")
-            print("INFO: Please run 'python jira_integration.py' manually")
+            print(f"❌ Failed to update Jira data: {e}")
+            print("💡 Please run 'python jira_integration.py' manually")
         except Exception as e:
-            print(f"ERROR: {e}")
+            print(f"❌ Error: {e}")
     
     print("\n" + "=" * 60)
     
@@ -216,14 +207,14 @@ def main():
         start_dashboard_server(8080)
     except OSError as e:
         if "Address already in use" in str(e):
-            print("ERROR: Port 8080 is already in use")
-            print("INFO: Try a different port or stop the existing server")
+            print("❌ Port 8080 is already in use")
+            print("💡 Try a different port or stop the existing server")
             try:
                 start_dashboard_server(8081)
             except:
-                print("ERROR: Port 8081 also in use. Please stop other servers.")
+                print("❌ Port 8081 also in use. Please stop other servers.")
         else:
-            print(f"ERROR: Server error: {e}")
+            print(f"❌ Server error: {e}")
 
 if __name__ == "__main__":
     main()

@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
 """
-Jira-DataDog Live Monitoring System with Comprehensive Logging
+Jira-DataDog Live Monitoring System with Authentication
 Single unified application that always fetches live data
 
 This application:
 - Always fetches live Jira data (no cached data mode)
 - Auto-refreshes every 5 minutes for real-time updates
 - Continuously monitors and updates the dashboard
+- Includes secure authentication system
 - Single command execution - no separate scripts needed
 - Comprehensive logging for production deployment
 
 Usage:
-    python run_pipeline.py                    # Start live monitoring system
+    python run_pipeline.py                    # Start live monitoring system with auth
     python run_pipeline.py --stop             # Stop running servers
+    python run_pipeline.py --no-auth          # Start without authentication (legacy)
 """
 
 import os
@@ -130,6 +132,39 @@ def check_data_files():
     
     return has_jira
 
+def setup_authentication():
+    """Setup authentication if not already configured"""
+    users_file = "users.json"
+    
+    if not os.path.exists(users_file):
+        logger.info("Setting up authentication for first time")
+        print_step("Setting up authentication...")
+        
+        # Create default admin user
+        import hashlib
+        
+        def hash_password(password):
+            return hashlib.sha256(password.encode()).hexdigest()
+        
+        default_users = {
+            "jiradd": {
+                "password_hash": hash_password("JiraDD@25!"),
+                "role": "admin",
+                "created_at": datetime.now().isoformat()
+            }
+        }
+        
+        with open(users_file, 'w') as f:
+            json.dump(default_users, f, indent=2)
+        
+        print_success("Authentication configured")
+        print_info("Username: jiradd")
+        print_info("Use 'python user_manager.py' to manage users")
+        logger.info("Authentication setup completed with admin user")
+    else:
+        logger.info("Authentication already configured")
+        print_success("Authentication ready")
+
 def stop_existing_dashboard():
     """Stop any existing dashboard servers on port 8080"""
     stopped = SystemUtils.stop_process_on_port(8080)
@@ -161,6 +196,8 @@ Auto-refreshes Jira data every 5 minutes for new issues
                        help="Start dashboard only (alias for --quick-start)")
     parser.add_argument("--stop", action="store_true", 
                        help="Stop any running dashboard servers and exit")
+    parser.add_argument("--no-auth", action="store_true", 
+                       help="Start dashboard without authentication (legacy mode)")
     
     args = parser.parse_args()
     logger.info(f"Command line arguments: {args}")
@@ -210,6 +247,10 @@ Auto-refreshes Jira data every 5 minutes for new issues
     print_step("Checking existing data files...")
     check_data_files()
     
+    # Setup authentication (unless disabled)
+    if not args.no_auth:
+        setup_authentication()
+    
     # Step 1: Data fetch (unless quick-start)
     if not args.quick_start:
         # Step 1: Jira Data (ALWAYS LIVE FETCH - NO CACHED DATA)
@@ -234,7 +275,17 @@ Auto-refreshes Jira data every 5 minutes for new issues
     # Step 2: Live Dashboard with Fast Auto-Refresh
     logger.info("Starting dashboard server")
     print_header("STEP 2: STARTING LIVE DASHBOARD SERVER")
-    print("Dashboard URL: http://localhost:8080")
+    
+    if args.no_auth:
+        print("Dashboard URL: http://localhost:8080 (No Authentication)")
+        print("Dashboard Mode: Legacy without authentication")
+        dashboard_script = "dashboard_server.py"
+    else:
+        print("Dashboard URL: http://localhost:8080 (Authentication Required)")
+        print("Login Username: jiradd")
+        print("Dashboard Mode: Secure with authentication")
+        dashboard_script = "flask_app.py"
+    
     print("Live Auto-refresh: Every 5 minutes for NEW Jira issues")
     print("DataDog Dashboard: Available on DataDog port (no metrics fetching)")
     print("Stop server: Press Ctrl+C")
@@ -248,7 +299,8 @@ Auto-refreshes Jira data every 5 minutes for new issues
         # Use the virtual environment Python
         venv_python = Path(".venv/Scripts/python.exe")
         logger.info(f"Starting dashboard server with Python: {venv_python}")
-        subprocess.run([str(venv_python), "dashboard_server.py"])
+        logger.info(f"Using dashboard script: {dashboard_script}")
+        subprocess.run([str(venv_python), dashboard_script])
     except KeyboardInterrupt:
         logger.info("Dashboard server stopped by user (KeyboardInterrupt)")
         print("\n\nDashboard server stopped by user")

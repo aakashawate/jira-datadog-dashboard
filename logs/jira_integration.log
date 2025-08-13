@@ -232,3 +232,108 @@ KeyError: 'location'
 2025-08-13 15:10:02 - jira_integration - INFO - [jira_integration.py:677] - Closed: 3
 2025-08-13 15:10:02 - jira_integration - INFO - [jira_integration.py:678] - Todo: 8
 2025-08-13 15:10:02 - jira_integration - INFO - [jira_integration.py:680] - Last Updated: 2025-08-13T15:10:02.949113
+2025-08-13 15:15:05 - jira_integration - WARNING - [jira_integration.py:30] - MySQL connector not available - using file system storage only
+2025-08-13 15:15:05 - jira_integration - INFO - [jira_integration.py:34] - Configuration imported from config.py
+2025-08-13 15:15:05 - jira_integration - INFO - [jira_integration.py:695] - Starting jira_integration.py as main module
+2025-08-13 15:15:05 - jira_integration - INFO - [jira_integration.py:773] - No command line arguments, running main sync
+2025-08-13 15:15:05 - jira_integration - INFO - [jira_integration.py:618] - === STARTING DONATION PLATFORM JIRA SYNC ===
+2025-08-13 15:15:05 - jira_integration - INFO - [jira_integration.py:442] - Initialized JiraClient for https://tseljira.atlassian.net with user saiakki37@gmail.com
+2025-08-13 15:15:05 - jira_integration - INFO - [jira_integration.py:378] - Using File System storage
+2025-08-13 15:15:05 - jira_integration - INFO - [jira_integration.py:253] - File system directories initialized
+2025-08-13 15:15:05 - jira_integration - INFO - [jira_integration.py:556] - Validating Jira API connection...
+2025-08-13 15:15:06 - jira_integration - INFO - [jira_integration.py:562] - Connection validated for user: Aakash Awate
+2025-08-13 15:15:06 - jira_integration - INFO - [jira_integration.py:632] - Using File System storage
+2025-08-13 15:15:06 - jira_integration - INFO - [jira_integration.py:635] - Data Directory: donation_platform_data
+2025-08-13 15:15:06 - jira_integration - INFO - [jira_integration.py:253] - File system directories initialized
+2025-08-13 15:15:06 - jira_integration - INFO - [jira_integration.py:645] - Fetching Donation Platform project data...
+2025-08-13 15:15:06 - jira_integration - INFO - [jira_integration.py:450] - Fetching project by ID: 10000
+2025-08-13 15:15:06 - jira_integration - INFO - [jira_integration.py:454] - Successfully fetched project: Donation Platform
+2025-08-13 15:15:06 - jira_integration - INFO - [jira_integration.py:657] - Project: Donation Platform (DP)
+2025-08-13 15:15:06 - jira_integration - INFO - [jira_integration.py:660] - Fetching Donation Platform issues...
+2025-08-13 15:15:06 - jira_integration - INFO - [jira_integration.py:478] - Starting to fetch all issues for project DP
+2025-08-13 15:15:07 - jira_integration - INFO - [jira_integration.py:521] - Fetched 19 issues in this batch (total: 19)
+2025-08-13 15:15:07 - jira_integration - INFO - [jira_integration.py:524] - Completed fetching all issues. Total: 19
+2025-08-13 15:15:07 - jira_integration - INFO - [jira_integration.py:539] - Successfully fetched 19 issues from project DP
+2025-08-13 15:15:07 - jira_integration - INFO - [jira_integration.py:667] - Saving 19 Donation Platform issues to file system...
+2025-08-13 15:15:07 - jira_integration - INFO - [jira_integration.py:296] - FRESH DATA: Saved 19 issues with timestamp 2025-08-13T15:15:07.269563
+2025-08-13 15:15:07 - jira_integration - INFO - [jira_integration.py:669] - Donation Platform sync completed successfully!
+2025-08-13 15:15:07 - jira_integration - INFO - [jira_integration.py:674] - === DONATION PLATFORM STATISTICS ===
+2025-08-13 15:15:07 - jira_integration - INFO - [jira_integration.py:675] - Total Issues: 19
+2025-08-13 15:15:07 - jira_integration - INFO - [jira_integration.py:676] - Active: 5
+2025-08-13 15:15:07 - jira_integration - INFO - [jira_integration.py:677] - Closed: 3
+2025-08-13 15:15:07 - jira_integration - INFO - [jira_integration.py:678] - Todo: 8
+2025-08-13 15:15:07 - jira_integration - INFO - [jira_integration.py:680] - Last Updated: 2025-08-13T15:15:07.253755
+2025-08-13 15:20:08 - jira_integration - WARNING - [jira_integration.py:30] - MySQL connector not available - using file system storage only
+2025-08-13 15:20:08 - jira_integration - INFO - [jira_integration.py:34] - Configuration imported from config.py
+2025-08-13 15:20:08 - jira_integration - INFO - [jira_integration.py:695] - Starting jira_integration.py as main module
+2025-08-13 15:20:08 - jira_integration - INFO - [jira_integration.py:773] - No command line arguments, running main sync
+2025-08-13 15:20:08 - jira_integration - INFO - [jira_integration.py:618] - === STARTING DONATION PLATFORM JIRA SYNC ===
+2025-08-13 15:20:08 - jira_integration - INFO - [jira_integration.py:442] - Initialized JiraClient for https://tseljira.atlassian.net with user saiakki37@gmail.com
+2025-08-13 15:20:08 - jira_integration - INFO - [jira_integration.py:378] - Using File System storage
+2025-08-13 15:20:08 - jira_integration - INFO - [jira_integration.py:253] - File system directories initialized
+2025-08-13 15:20:08 - jira_integration - INFO - [jira_integration.py:556] - Validating Jira API connection...
+2025-08-13 15:20:09 - jira_integration - INFO - [jira_integration.py:562] - Connection validated for user: Aakash Awate
+2025-08-13 15:20:09 - jira_integration - INFO - [jira_integration.py:632] - Using File System storage
+2025-08-13 15:20:09 - jira_integration - INFO - [jira_integration.py:635] - Data Directory: donation_platform_data
+2025-08-13 15:20:09 - jira_integration - INFO - [jira_integration.py:253] - File system directories initialized
+2025-08-13 15:20:09 - jira_integration - INFO - [jira_integration.py:645] - Fetching Donation Platform project data...
+2025-08-13 15:20:09 - jira_integration - INFO - [jira_integration.py:450] - Fetching project by ID: 10000
+2025-08-13 15:20:09 - jira_integration - INFO - [jira_integration.py:454] - Successfully fetched project: Donation Platform
+2025-08-13 15:20:09 - jira_integration - INFO - [jira_integration.py:657] - Project: Donation Platform (DP)
+2025-08-13 15:20:09 - jira_integration - INFO - [jira_integration.py:660] - Fetching Donation Platform issues...
+2025-08-13 15:20:09 - jira_integration - INFO - [jira_integration.py:478] - Starting to fetch all issues for project DP
+2025-08-13 15:20:10 - jira_integration - INFO - [jira_integration.py:521] - Fetched 19 issues in this batch (total: 19)
+2025-08-13 15:20:10 - jira_integration - INFO - [jira_integration.py:524] - Completed fetching all issues. Total: 19
+2025-08-13 15:20:10 - jira_integration - INFO - [jira_integration.py:539] - Successfully fetched 19 issues from project DP
+2025-08-13 15:20:10 - jira_integration - INFO - [jira_integration.py:667] - Saving 19 Donation Platform issues to file system...
+2025-08-13 15:20:10 - jira_integration - INFO - [jira_integration.py:296] - FRESH DATA: Saved 19 issues with timestamp 2025-08-13T15:20:10.233578
+2025-08-13 15:20:10 - jira_integration - INFO - [jira_integration.py:669] - Donation Platform sync completed successfully!
+2025-08-13 15:20:10 - jira_integration - INFO - [jira_integration.py:674] - === DONATION PLATFORM STATISTICS ===
+2025-08-13 15:20:10 - jira_integration - INFO - [jira_integration.py:675] - Total Issues: 19
+2025-08-13 15:20:10 - jira_integration - INFO - [jira_integration.py:676] - Active: 5
+2025-08-13 15:20:10 - jira_integration - INFO - [jira_integration.py:677] - Closed: 3
+2025-08-13 15:20:10 - jira_integration - INFO - [jira_integration.py:678] - Todo: 8
+2025-08-13 15:20:10 - jira_integration - INFO - [jira_integration.py:680] - Last Updated: 2025-08-13T15:20:10.233578
+2025-08-13 15:25:11 - jira_integration - WARNING - [jira_integration.py:30] - MySQL connector not available - using file system storage only
+2025-08-13 15:25:11 - jira_integration - INFO - [jira_integration.py:34] - Configuration imported from config.py
+2025-08-13 15:25:11 - jira_integration - INFO - [jira_integration.py:695] - Starting jira_integration.py as main module
+2025-08-13 15:25:11 - jira_integration - INFO - [jira_integration.py:773] - No command line arguments, running main sync
+2025-08-13 15:25:11 - jira_integration - INFO - [jira_integration.py:618] - === STARTING DONATION PLATFORM JIRA SYNC ===
+2025-08-13 15:25:11 - jira_integration - INFO - [jira_integration.py:442] - Initialized JiraClient for https://tseljira.atlassian.net with user saiakki37@gmail.com
+2025-08-13 15:25:11 - jira_integration - INFO - [jira_integration.py:378] - Using File System storage
+2025-08-13 15:25:11 - jira_integration - INFO - [jira_integration.py:253] - File system directories initialized
+2025-08-13 15:25:11 - jira_integration - INFO - [jira_integration.py:556] - Validating Jira API connection...
+2025-08-13 15:25:11 - jira_integration - INFO - [jira_integration.py:562] - Connection validated for user: Aakash Awate
+2025-08-13 15:25:11 - jira_integration - INFO - [jira_integration.py:632] - Using File System storage
+2025-08-13 15:25:11 - jira_integration - INFO - [jira_integration.py:635] - Data Directory: donation_platform_data
+2025-08-13 15:25:11 - jira_integration - INFO - [jira_integration.py:253] - File system directories initialized
+2025-08-13 15:25:11 - jira_integration - INFO - [jira_integration.py:645] - Fetching Donation Platform project data...
+2025-08-13 15:25:11 - jira_integration - INFO - [jira_integration.py:450] - Fetching project by ID: 10000
+2025-08-13 15:25:12 - jira_integration - INFO - [jira_integration.py:454] - Successfully fetched project: Donation Platform
+2025-08-13 15:25:12 - jira_integration - INFO - [jira_integration.py:657] - Project: Donation Platform (DP)
+2025-08-13 15:25:12 - jira_integration - INFO - [jira_integration.py:660] - Fetching Donation Platform issues...
+2025-08-13 15:25:12 - jira_integration - INFO - [jira_integration.py:478] - Starting to fetch all issues for project DP
+2025-08-13 15:25:12 - jira_integration - INFO - [jira_integration.py:521] - Fetched 19 issues in this batch (total: 19)
+2025-08-13 15:25:12 - jira_integration - INFO - [jira_integration.py:524] - Completed fetching all issues. Total: 19
+2025-08-13 15:25:12 - jira_integration - INFO - [jira_integration.py:539] - Successfully fetched 19 issues from project DP
+2025-08-13 15:25:12 - jira_integration - INFO - [jira_integration.py:667] - Saving 19 Donation Platform issues to file system...
+2025-08-13 15:25:12 - jira_integration - INFO - [jira_integration.py:296] - FRESH DATA: Saved 19 issues with timestamp 2025-08-13T15:25:12.898554
+2025-08-13 15:25:12 - jira_integration - INFO - [jira_integration.py:669] - Donation Platform sync completed successfully!
+2025-08-13 15:25:12 - jira_integration - INFO - [jira_integration.py:674] - === DONATION PLATFORM STATISTICS ===
+2025-08-13 15:25:12 - jira_integration - INFO - [jira_integration.py:675] - Total Issues: 19
+2025-08-13 15:25:12 - jira_integration - INFO - [jira_integration.py:676] - Active: 5
+2025-08-13 15:25:12 - jira_integration - INFO - [jira_integration.py:677] - Closed: 3
+2025-08-13 15:25:12 - jira_integration - INFO - [jira_integration.py:678] - Todo: 8
+2025-08-13 15:25:12 - jira_integration - INFO - [jira_integration.py:680] - Last Updated: 2025-08-13T15:25:12.889650
+2025-08-13 20:56:39 - jira_integration - WARNING - [jira_integration.py:30] - MySQL connector not available - using file system storage only
+2025-08-13 20:56:39 - jira_integration - INFO - [jira_integration.py:34] - Configuration imported from config.py
+2025-08-13 20:56:39 - jira_integration - INFO - [jira_integration.py:695] - Starting jira_integration.py as main module
+2025-08-13 20:56:39 - jira_integration - INFO - [jira_integration.py:773] - No command line arguments, running main sync
+2025-08-13 20:56:39 - jira_integration - INFO - [jira_integration.py:618] - === STARTING DONATION PLATFORM JIRA SYNC ===
+2025-08-13 20:56:39 - jira_integration - INFO - [jira_integration.py:442] - Initialized JiraClient for https://tseljira.atlassian.net with user saiakki37@gmail.com
+2025-08-13 20:56:39 - jira_integration - INFO - [jira_integration.py:378] - Using File System storage
+2025-08-13 20:56:39 - jira_integration - INFO - [jira_integration.py:253] - File system directories initialized
+2025-08-13 20:56:39 - jira_integration - INFO - [jira_integration.py:556] - Validating Jira API connection...
+2025-08-13 20:56:40 - jira_integration - ERROR - [jira_integration.py:566] - Connection validation failed: 401 Client Error: Unauthorized for url: https://tseljira.atlassian.net/rest/api/3/myself
+2025-08-13 20:56:40 - jira_integration - ERROR - [jira_integration.py:568] - Response status: 401
+2025-08-13 20:56:40 - jira_integration - ERROR - [jira_integration.py:627] - Cannot connect to Jira API - check credentials and network
